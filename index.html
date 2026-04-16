@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Hemanshu Vikrant Patil</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #0a0a08;
+    --surface: #111110;
+    --border: rgba(255,255,255,0.08);
+    --text: #e8e4dc;
+    --muted: rgba(232,228,220,0.45);
+    --accent: #c9a96e;
+    --accent-dim: rgba(201,169,110,0.15);
+    --serif: 'Cormorant Garamond', Georgia, serif;
+    --sans: 'DM Sans', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  ::selection { background: var(--accent-dim); color: var(--accent); }
+
+  /* ── Scrollbar ── */
+  ::-webkit-scrollbar { width: 3px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--accent); }
+
+  /* ── Nav ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.5rem 3rem;
+    background: linear-gradient(to bottom, rgba(10,10,8,0.95) 0%, transparent 100%);
+    backdrop-filter: blur(2px);
+  }
+
+  .nav-logo {
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    font-weight: 300;
+    letter-spacing: 0.04em;
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .nav-link {
+    font-size: 0.78rem;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .nav-link:hover { color: var(--accent); }
+
+  /* ── Hero ── */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 3rem 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 60% 40%, rgba(201,169,110,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.2s forwards;
+  }
+
+  .hero-title {
+    font-family: var(--serif);
+    font-size: clamp(3.5rem, 9vw, 8rem);
+    font-weight: 300;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.35s forwards;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .hero-tags {
+    display: flex; gap: 2rem; align-items: center;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.5s forwards;
+  }
+
+  .hero-tag {
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .hero-tag::before {
+    content: '—';
+    margin-right: 0.5em;
+    color: var(--accent);
+    opacity: 0.6;
+  }
+
+  .hero-tagline {
+    font-family: var(--serif);
+    font-size: 1.2rem;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--muted);
+    max-width: 480px;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.65s forwards;
+  }
+
+  .scroll-hint {
+    position: absolute; bottom: 2.5rem; right: 3rem;
+    display: flex; flex-direction: column; align-items: center; gap: 0.6rem;
+    opacity: 0;
+    animation: fadeIn 1s 1.2s forwards;
+  }
+
+  .scroll-hint span {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    writing-mode: vertical-lr;
+  }
+
+  .scroll-line {
+    width: 1px; height: 50px;
+    background: linear-gradient(to bottom, var(--accent), transparent);
+    animation: scrollPulse 2s 1.5s infinite;
+  }
+
+  /* ── Sections ── */
+  section {
+    padding: 7rem 3rem;
+    max-width: 900px;
+    margin: 0 auto;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+  section.visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  .section-header {
+    display: flex; align-items: baseline; gap: 1.5rem;
+    margin-bottom: 3.5rem;
+    padding-bottom: 1.2rem;
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .section-num {
+    font-family: var(--serif);
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    flex-shrink: 0;
+  }
+
+  .section-title {
+    font-family: var(--serif);
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 300;
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+  }
+
+  /* ── About ── */
+  .about-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  .about-text {
+    font-size: 1rem;
+    color: rgba(232,228,220,0.8);
+    line-height: 1.9;
+  }
+
+  .about-text strong {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .qualities-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+  }
+
+  .qualities-list { list-style: none; }
+
+  .qualities-list li {
+    display: flex; align-items: center; gap: 1rem;
+    padding: 0.7rem 0;
+    border-bottom: 0.5px solid var(--border);
+    font-size: 0.92rem;
+    color: rgba(232,228,220,0.75);
+    letter-spacing: 0.02em;
+  }
+
+  .qualities-list li::before {
+    content: '';
+    width: 5px; height: 1px;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+
+  /* ── Education ── */
+  .edu-card {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-left: 2px solid var(--accent);
+    padding: 2rem 2.5rem;
+    border-radius: 2px;
+  }
+
+  .edu-degree {
+    font-family: var(--serif);
+    font-size: 1.6rem;
+    font-weight: 300;
+    margin-bottom: 0.3rem;
+  }
+
+  .edu-college {
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 0.15rem;
+  }
+
+  .edu-meta {
+    display: flex; gap: 1.5rem; margin: 1rem 0;
+    flex-wrap: wrap;
+  }
+
+  .edu-badge {
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--accent-dim);
+    padding: 0.3em 0.9em;
+    border-radius: 2px;
+  }
+
+  .edu-desc {
+    font-size: 0.92rem;
+    color: rgba(232,228,220,0.65);
+    line-height: 1.8;
+    margin-top: 1rem;
+  }
+
+  /* ── Beyond ── */
+  .interests-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  .interest-card {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    padding: 1.8rem;
+    border-radius: 2px;
+    transition: border-color 0.3s, transform 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .interest-card::before {
+    content: '';
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(to right, var(--accent), transparent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+  }
+
+  .interest-card:hover { border-color: rgba(201,169,110,0.3); transform: translateY(-2px); }
+  .interest-card:hover::before { transform: scaleX(1); }
+
+  .interest-icon {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .interest-name {
+    font-family: var(--serif);
+    font-size: 1.3rem;
+    font-weight: 300;
+    margin-bottom: 0.5rem;
+  }
+
+  .interest-desc {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  .quote-block {
+    margin-top: 4rem;
+    padding: 2.5rem 3rem;
+    border-left: 1px solid var(--accent);
+    background: var(--surface);
+    border-radius: 0 2px 2px 0;
+  }
+
+  .quote-text {
+    font-family: var(--serif);
+    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+    font-weight: 300;
+    font-style: italic;
+    line-height: 1.7;
+    color: rgba(232,228,220,0.9);
+    margin-bottom: 1.2rem;
+  }
+
+  .quote-text em { color: var(--accent); font-style: normal; }
+
+  .quote-author {
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ── Connect ── */
+  .connect-body {
+    display: flex; flex-direction: column;
+    align-items: flex-start; gap: 2.5rem;
+  }
+
+  .connect-text {
+    font-size: 1rem;
+    color: rgba(232,228,220,0.7);
+    max-width: 520px;
+    line-height: 1.9;
+  }
+
+  .connect-btn {
+    display: inline-flex; align-items: center; gap: 0.75rem;
+    font-family: var(--sans);
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--bg);
+    background: var(--accent);
+    text-decoration: none;
+    padding: 0.85em 2.2em;
+    border-radius: 1px;
+    transition: opacity 0.3s, transform 0.3s;
+  }
+
+  .connect-btn:hover { opacity: 0.85; transform: translateX(3px); }
+
+  .connect-btn svg {
+    width: 14px; height: 14px;
+  }
+
+  /* ── Footer ── */
+  footer {
+    padding: 2.5rem 3rem;
+    border-top: 0.5px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 1rem;
+  }
+
+  .footer-text {
+    font-size: 0.78rem;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+
+  .footer-text span { color: var(--accent); }
+
+  /* ── Animations ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: none; }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 1; transform: scaleY(1); }
+    50%       { opacity: 0.4; transform: scaleY(0.7); }
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 700px) {
+    nav { padding: 1.25rem 1.5rem; }
+    .hero { padding: 0 1.5rem 4rem; }
+    section { padding: 5rem 1.5rem; }
+    .about-body { grid-template-columns: 1fr; gap: 2.5rem; }
+    .interests-grid { grid-template-columns: 1fr; }
+    .quote-block { padding: 1.8rem 1.5rem; }
+    footer { padding: 2rem 1.5rem; }
+    .scroll-hint { right: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">HVP</a>
+  <a class="nav-link" href="https://www.linkedin.com/in/hemanshu-patil-10939a400" target="_blank" rel="noopener">LinkedIn ↗</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg"></div>
+  <p class="hero-label">Portfolio</p>
+  <h1 class="hero-title">Hemanshu<br><em>Vikrant</em> Patil</h1>
+  <div class="hero-tags">
+    <span class="hero-tag">18 years old</span>
+    <span class="hero-tag">BCA Student</span>
+    <span class="hero-tag">Athlete</span>
+    <span class="hero-tag">Creative</span>
+  </div>
+  <p class="hero-tagline">Driven by curiosity, shaped by discipline, expressed through words.</p>
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    <span>scroll</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <h2 class="section-title">About Me</h2>
+  </div>
+  <div class="about-body">
+    <p class="about-text">
+      I am a first-year BCA student at <strong>Sinhgad College of Science</strong>, Pune. At 18, I'm building my foundation in computer science while pursuing excellence in athletics and the written word.<br><br>
+      My approach to everything — whether it's a new technology, a training routine, or crafting a verse — is grounded in one principle: learn fast, apply faster.
+    </p>
+    <div>
+      <p class="qualities-label">Core Qualities</p>
+      <ul class="qualities-list">
+        <li>Quick Learner</li>
+        <li>Sharp Analytical Mind</li>
+        <li>Self-Disciplined</li>
+        <li>Adaptable &amp; Resilient</li>
+        <li>Creative Thinker</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <h2 class="section-title">Education</h2>
+  </div>
+  <div class="edu-card">
+    <h3 class="edu-degree">Bachelor of Computer Applications</h3>
+    <p class="edu-college">Sinhgad College of Science</p>
+    <div class="edu-meta">
+      <span class="edu-badge">First Year</span>
+      <span class="edu-badge">2024 – Present</span>
+      <span class="edu-badge">BCA</span>
+    </div>
+    <p class="edu-desc">
+      Pursuing a rigorous three-year undergraduate program covering data structures, algorithms, software engineering, and modern computing paradigms. Consistently applying classroom theory to real-world problems.
+    </p>
+  </div>
+</section>
+
+<!-- BEYOND -->
+<section id="beyond">
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <h2 class="section-title">Beyond the Classroom</h2>
+  </div>
+  <div class="interests-grid">
+    <div class="interest-card">
+      <span class="interest-icon">🏋️</span>
+      <h3 class="interest-name">Powerlifting</h3>
+      <p class="interest-desc">Iron discipline. The barbell teaches patience, consistency, and the value of incremental progress.</p>
+    </div>
+    <div class="interest-card">
+      <span class="interest-icon">🥊</span>
+      <h3 class="interest-name">Boxing</h3>
+      <p class="interest-desc">Precision under pressure. The sweet science of reading your opponent and responding with clarity.</p>
+    </div>
+    <div class="interest-card">
+      <span class="interest-icon">🏊</span>
+      <h3 class="interest-name">Swimming</h3>
+      <p class="interest-desc">Flow, breath, and rhythm. Water demands you to be fully present in every stroke.</p>
+    </div>
+    <div class="interest-card">
+      <span class="interest-icon">✍️</span>
+      <h3 class="interest-name">Writing</h3>
+      <p class="interest-desc">Quotes, poems, and shayaris — crafting emotions into language, one line at a time.</p>
+    </div>
+  </div>
+  <div class="quote-block">
+    <p class="quote-text">
+      "Strength is not always loud —<br>
+      <em>sometimes it is the quiet discipline<br>
+      of showing up, every single day."</em>
+    </p>
+    <p class="quote-author">— Hemanshu Vikrant Patil</p>
+  </div>
+</section>
+
+<!-- CONNECT -->
+<section id="connect">
+  <div class="section-header">
+    <span class="section-num">04</span>
+    <h2 class="section-title">Let's Connect</h2>
+  </div>
+  <div class="connect-body">
+    <p class="connect-text">
+      Open to conversations about technology, athletics, or creative writing. Find me on LinkedIn — always happy to connect with curious minds.
+    </p>
+    <a class="connect-btn" href="https://www.linkedin.com/in/hemanshu-patil-10939a400" target="_blank" rel="noopener">
+      Connect on LinkedIn
+      <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p class="footer-text">© 2026 <span>Hemanshu Vikrant Patil</span></p>
+  <p class="footer-text">BCA · Sinhgad College of Science</p>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver(
+    (entries) => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
+    { threshold: 0.12 }
+  );
+  document.querySelectorAll('section').forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
