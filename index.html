@@ -33,7 +33,6 @@
 
   ::selection { background: var(--accent-dim); color: var(--accent); }
 
-  /* ── Scrollbar ── */
   ::-webkit-scrollbar { width: 3px; }
   ::-webkit-scrollbar-track { background: var(--bg); }
   ::-webkit-scrollbar-thumb { background: var(--accent); }
@@ -56,6 +55,12 @@
     text-decoration: none;
   }
 
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+
   .nav-link {
     font-size: 0.78rem;
     font-weight: 400;
@@ -64,8 +69,17 @@
     color: var(--muted);
     text-decoration: none;
     transition: color 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
   }
   .nav-link:hover { color: var(--accent); }
+
+  .nav-link svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+  }
 
   /* ── Hero ── */
   .hero {
@@ -114,6 +128,7 @@
     margin-bottom: 1.5rem;
     opacity: 0;
     animation: fadeUp 0.9s 0.5s forwards;
+    flex-wrap: wrap;
   }
 
   .hero-tag {
@@ -139,6 +154,41 @@
     max-width: 480px;
     opacity: 0;
     animation: fadeUp 0.9s 0.65s forwards;
+  }
+
+  /* ── Hero social pills ── */
+  .hero-socials {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.8s forwards;
+  }
+
+  .hero-social-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    border: 0.5px solid var(--border);
+    padding: 0.5em 1.2em;
+    border-radius: 100px;
+    transition: color 0.3s, border-color 0.3s, background 0.3s;
+  }
+
+  .hero-social-pill:hover {
+    color: var(--accent);
+    border-color: rgba(201,169,110,0.4);
+    background: var(--accent-dim);
+  }
+
+  .hero-social-pill svg {
+    width: 13px;
+    height: 13px;
   }
 
   .scroll-hint {
@@ -379,6 +429,12 @@
     line-height: 1.9;
   }
 
+  .connect-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
   .connect-btn {
     display: inline-flex; align-items: center; gap: 0.75rem;
     font-family: var(--sans);
@@ -400,6 +456,32 @@
     width: 14px; height: 14px;
   }
 
+  /* Instagram button — outlined variant */
+  .connect-btn-outline {
+    display: inline-flex; align-items: center; gap: 0.75rem;
+    font-family: var(--sans);
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: transparent;
+    border: 0.5px solid var(--accent);
+    text-decoration: none;
+    padding: 0.85em 2.2em;
+    border-radius: 1px;
+    transition: background 0.3s, color 0.3s, transform 0.3s;
+  }
+
+  .connect-btn-outline:hover {
+    background: var(--accent-dim);
+    transform: translateX(3px);
+  }
+
+  .connect-btn-outline svg {
+    width: 14px; height: 14px;
+  }
+
   /* ── Footer ── */
   footer {
     padding: 2.5rem 3rem;
@@ -415,6 +497,23 @@
   }
 
   .footer-text span { color: var(--accent); }
+
+  .footer-socials {
+    display: flex;
+    gap: 1.2rem;
+    align-items: center;
+  }
+
+  .footer-social {
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+
+  .footer-social:hover { color: var(--accent); }
 
   /* ── Animations ── */
   @keyframes fadeUp {
@@ -433,13 +532,16 @@
   /* ── Responsive ── */
   @media (max-width: 700px) {
     nav { padding: 1.25rem 1.5rem; }
+    .nav-right { gap: 1.2rem; }
     .hero { padding: 0 1.5rem 4rem; }
+    .hero-socials { flex-wrap: wrap; }
     section { padding: 5rem 1.5rem; }
     .about-body { grid-template-columns: 1fr; gap: 2.5rem; }
     .interests-grid { grid-template-columns: 1fr; }
     .quote-block { padding: 1.8rem 1.5rem; }
-    footer { padding: 2rem 1.5rem; }
+    footer { padding: 2rem 1.5rem; flex-direction: column; align-items: flex-start; }
     .scroll-hint { right: 1.5rem; }
+    .connect-buttons { flex-direction: column; }
   }
 </style>
 </head>
@@ -448,7 +550,26 @@
 <!-- NAV -->
 <nav>
   <a class="nav-logo" href="#">HVP</a>
-  <a class="nav-link" href="https://www.linkedin.com/in/hemanshu-patil-10939a400" target="_blank" rel="noopener">LinkedIn ↗</a>
+  <div class="nav-right">
+    <!-- LinkedIn -->
+    <a class="nav-link" href="https://www.linkedin.com/in/hemanshu-patil-10939a400" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+        <rect x="2" y="9" width="4" height="12"/>
+        <circle cx="4" cy="4" r="2"/>
+      </svg>
+      LinkedIn ↗
+    </a>
+    <!-- Instagram -->
+    <a class="nav-link" href="https://www.instagram.com/hemanshuvp_631/" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+      </svg>
+      Instagram ↗
+    </a>
+  </div>
 </nav>
 
 <!-- HERO -->
@@ -463,6 +584,27 @@
     <span class="hero-tag">Creative</span>
   </div>
   <p class="hero-tagline">Driven by curiosity, shaped by discipline, expressed through words.</p>
+
+  <!-- Social pills in hero -->
+  <div class="hero-socials">
+    <a class="hero-social-pill" href="https://www.linkedin.com/in/hemanshu-patil-10939a400" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+        <rect x="2" y="9" width="4" height="12"/>
+        <circle cx="4" cy="4" r="2"/>
+      </svg>
+      LinkedIn
+    </a>
+    <a class="hero-social-pill" href="https://www.instagram.com/hemanshuvp_631/" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+      </svg>
+      Instagram
+    </a>
+  </div>
+
   <div class="scroll-hint">
     <div class="scroll-line"></div>
     <span>scroll</span>
@@ -488,7 +630,7 @@
         <li>Self-Disciplined</li>
         <li>Adaptable &amp; Resilient</li>
         <li>History Lover</li>
-       <li>Critical Thinker</li>
+        <li>Critical Thinker</li>
       </ul>
     </div>
   </div>
@@ -560,20 +702,40 @@
   </div>
   <div class="connect-body">
     <p class="connect-text">
-      Open to conversations about technology, athletics, or creative writing. Find me on LinkedIn — always happy to connect with curious minds.
+      Open to conversations about technology, athletics, creative writing, or life in general. Find me on LinkedIn for professional conversations — or follow me on Instagram for a glimpse into the everyday grind.
     </p>
-    <a class="connect-btn" href="https://www.linkedin.com/in/hemanshu-patil-10939a400" target="_blank" rel="noopener">
-      Connect on LinkedIn
-      <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </a>
+    <div class="connect-buttons">
+      <!-- LinkedIn primary -->
+      <a class="connect-btn" href="https://www.linkedin.com/in/hemanshu-patil-10939a400" target="_blank" rel="noopener">
+        Connect on LinkedIn
+        <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+      <!-- Instagram outlined -->
+      <a class="connect-btn-outline" href="https://www.instagram.com/hemanshuvp_631/" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" width="14" height="14">
+          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+          <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+        </svg>
+        Follow on Instagram
+        <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    </div>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
   <p class="footer-text">© 2026 <span>Hemanshu Vikrant Patil</span></p>
+  <div class="footer-socials">
+    <a class="footer-social" href="https://www.linkedin.com/in/hemanshu-patil-10939a400" target="_blank" rel="noopener">LinkedIn</a>
+    <span style="color:var(--border)">|</span>
+    <a class="footer-social" href="https://www.instagram.com/hemanshuvp_631/" target="_blank" rel="noopener">Instagram</a>
+  </div>
   <p class="footer-text">BCA · Sinhgad College of Science</p>
 </footer>
 
