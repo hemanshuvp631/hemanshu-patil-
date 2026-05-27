@@ -66,54 +66,6 @@
   .mobile-nav a:hover { color: var(--accent); }
   .mobile-nav .mobile-divider { width: 1px; height: 30px; background: var(--border); }
 
-  /* ── Hero ── */
-  .hero {
-    min-height: 100vh;
-    display: grid; grid-template-columns: 1fr 420px;
-    align-items: end;
-    padding: 0 3rem 5rem;
-    position: relative; overflow: hidden; gap: 4rem;
-  }
-  .hero-bg {
-    position: absolute; inset: 0;
-    background: radial-gradient(ellipse 70% 60% at 30% 50%, rgba(201,169,110,0.05), transparent 65%);
-    pointer-events: none;
-  }
-  .hero-left { position: relative; padding-bottom: 1rem; }
-  .hero-label { font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.5rem; opacity: 0; animation: fadeUp 0.8s 0.2s forwards; }
-  .hero-title { font-family: var(--serif); font-size: clamp(3.2rem, 7vw, 7rem); font-weight: 300; line-height: 1.05; letter-spacing: -0.01em; margin-bottom: 2rem; opacity: 0; animation: fadeUp 0.9s 0.35s forwards; }
-  .hero-title em { font-style: italic; color: var(--accent); }
-  .hero-tags { display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap; margin-bottom: 1.5rem; opacity: 0; animation: fadeUp 0.9s 0.5s forwards; }
-  .hero-tag { font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
-  .hero-tag::before { content: "—"; margin-right: 0.5em; color: var(--accent); opacity: 0.6; }
-  .hero-tagline { font-family: var(--serif); font-size: 1.15rem; font-weight: 300; font-style: italic; color: var(--muted); max-width: 460px; opacity: 0; animation: fadeUp 0.9s 0.65s forwards; }
-  .hero-socials { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 2.2rem; opacity: 0; animation: fadeUp 0.9s 0.8s forwards; }
-
-  /* ── Hero photo ── */
-  .hero-photo-wrap {
-    position: relative; align-self: end;
-    opacity: 0; animation: fadeIn 1.2s 0.6s forwards;
-  }
-  .hero-photo-wrap::before {
-    content: "";
-    position: absolute; inset: -1px;
-    border-radius: 3px;
-    background: linear-gradient(160deg, rgba(201,169,110,0.25), transparent 50%, rgba(201,169,110,0.08));
-    pointer-events: none; z-index: 1;
-  }
-  .hero-photo {
-    width: 100%; max-width: 420px;
-    aspect-ratio: 2/3;
-    object-fit: cover; object-position: top center;
-    display: block; border-radius: 3px;
-    filter: grayscale(15%) contrast(1.05);
-    border: 0.5px solid rgba(201,169,110,0.2);
-  }
-  .hero-photo-caption {
-    position: absolute; bottom: 1.2rem; left: 1.2rem;
-    font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(201,169,110,0.6);
-    z-index: 2;
-  }
 
   /* Social pills */
   .social-pill {
