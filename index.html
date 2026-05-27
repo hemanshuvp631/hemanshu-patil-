@@ -1,1367 +1,1306 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-<title>Hemanshu Vikrant Patil | 3D Portfolio</title>
-
-<meta name="description" content="Luxury 3D Portfolio of Hemanshu Vikrant Patil — BCA Student, Developer, Athlete & Writer."/>
-
-<!-- Fonts -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-<!-- GSAP -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-
-<!-- LENIS -->
-<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/bundled/lenis.min.js"></script>
-
-<!-- THREE JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Hemanshu Vikrant Patil </title>
+<meta name="description" content="Hemanshu Vikrant Patil — BCA student, athlete, writer, and developer. An interactive 3D journey."/>
 <style>
-
-/* =========================================================
-ROOT
-========================================================= */
-
-:root{
-  --bg:#050505;
-  --bg2:#0e0e0e;
-  --text:#f4f1ea;
-  --muted:rgba(255,255,255,0.6);
-  --gold:#c9a96e;
-  --gold-light:#f3d9a6;
-  --glass:rgba(255,255,255,0.05);
-  --border:rgba(255,255,255,0.08);
-  --shadow:0 10px 40px rgba(0,0,0,0.4);
-}
-
-.light{
-  --bg:#f5f1e8;
-  --bg2:#ffffff;
-  --text:#111111;
-  --muted:rgba(0,0,0,0.6);
-  --glass:rgba(255,255,255,0.45);
-  --border:rgba(0,0,0,0.08);
-}
-
-/* =========================================================
-RESET
-========================================================= */
-
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
-
-html{
-  scroll-behavior:smooth;
-}
-
-body{
-  font-family:'Inter',sans-serif;
-  background:var(--bg);
-  color:var(--text);
-  overflow-x:hidden;
-  transition:background .4s,color .4s;
-}
-
-/* =========================================================
-NOISE OVERLAY
-========================================================= */
-
-body::before{
-  content:"";
-  position:fixed;
-  inset:0;
-  background-image:
-  radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px);
-  background-size:4px 4px;
-  opacity:.06;
-  z-index:99999;
-  pointer-events:none;
-}
-
-/* =========================================================
-SCROLL PROGRESS
-========================================================= */
-
-.progress-bar{
-  position:fixed;
-  top:0;
-  left:0;
-  height:3px;
-  width:0%;
-  z-index:999999;
-  background:linear-gradient(to right,var(--gold),#fff2cf);
-}
-
-/* =========================================================
-CUSTOM CURSOR
-========================================================= */
-
-.cursor{
-  width:18px;
-  height:18px;
-  border:2px solid var(--gold);
-  border-radius:50%;
-  position:fixed;
-  pointer-events:none;
-  z-index:999999;
-  transform:translate(-50%,-50%);
-  transition:transform .15s ease;
-  backdrop-filter:blur(4px);
-}
-
-.cursor-dot{
-  width:5px;
-  height:5px;
-  background:var(--gold);
-  border-radius:50%;
-  position:fixed;
-  pointer-events:none;
-  z-index:999999;
-  transform:translate(-50%,-50%);
-}
-
-/* =========================================================
-3D CANVAS
-========================================================= */
-
-#canvas-container{
-  position:fixed;
-  inset:0;
-  z-index:1;
-}
-
-/* =========================================================
-AMBIENT GLOW
-========================================================= */
-
-.glow{
-  position:fixed;
-  width:700px;
-  height:700px;
-  background:radial-gradient(circle,var(--gold),transparent 70%);
-  opacity:.08;
-  filter:blur(120px);
-  top:-200px;
-  right:-200px;
-  pointer-events:none;
-  z-index:0;
-}
-
-/* =========================================================
-NAVBAR
-========================================================= */
-
-nav{
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  z-index:9999;
-
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-
-  padding:1.5rem 6vw;
-
-  backdrop-filter:blur(16px);
-  background:rgba(0,0,0,0.25);
-
-  border-bottom:1px solid rgba(255,255,255,0.05);
-}
-
-.logo{
-  font-size:1.4rem;
-  font-weight:800;
-  color:var(--gold);
-  letter-spacing:4px;
-}
-
-.nav-links{
-  display:flex;
-  gap:2rem;
-}
-
-.nav-links a{
-  text-decoration:none;
-  color:var(--muted);
-  font-size:.8rem;
-  text-transform:uppercase;
-  letter-spacing:.12em;
-  transition:.3s;
-}
-
-.nav-links a:hover{
-  color:var(--gold);
-}
-
-.toggle{
-  width:50px;
-  height:26px;
-  border-radius:40px;
-  background:var(--glass);
-  border:1px solid var(--border);
-  position:relative;
-  cursor:pointer;
-}
-
-.toggle::before{
-  content:"";
-  position:absolute;
-  width:20px;
-  height:20px;
-  border-radius:50%;
-  background:var(--gold);
-  top:2px;
-  left:3px;
-  transition:.35s;
-}
-
-.light .toggle::before{
-  left:25px;
-}
-
-/* =========================================================
-SECTIONS
-========================================================= */
-
-section{
-  position:relative;
-  z-index:10;
-  min-height:100vh;
-  padding:9rem 7vw;
-}
-
-.section-title{
-  font-family:'Cormorant Garamond',serif;
-  font-size:4.5rem;
-  line-height:1;
-  margin-bottom:4rem;
-  color:var(--text);
-}
-
-/* =========================================================
-HERO
-========================================================= */
-
-.hero{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:4rem;
-}
-
-.hero-content{
-  max-width:760px;
-}
-
-.hero-sub{
-  color:var(--gold);
-  text-transform:uppercase;
-  letter-spacing:.35em;
-  font-size:.8rem;
-  margin-bottom:2rem;
-}
-
-.hero h1{
-  font-family:'Cormorant Garamond',serif;
-  font-size:7rem;
-  line-height:.9;
-  margin-bottom:2rem;
-}
-
-.hero h1 span{
-  color:var(--gold);
-}
-
-.hero p{
-  color:var(--muted);
-  line-height:1.9;
-  font-size:1.1rem;
-  margin-bottom:3rem;
-}
-
-/* =========================================================
-BUTTONS
-========================================================= */
-
-.buttons{
-  display:flex;
-  gap:1rem;
-  flex-wrap:wrap;
-}
-
-.btn{
-  position:relative;
-  overflow:hidden;
-
-  padding:1rem 2rem;
-  border-radius:60px;
-
-  text-decoration:none;
-  text-transform:uppercase;
-  letter-spacing:.12em;
-  font-size:.85rem;
-  font-weight:600;
-
-  transition:.35s;
-}
-
-.btn-primary{
-  background:var(--gold);
-  color:#000;
-}
-
-.btn-secondary{
-  background:var(--glass);
-  color:var(--text);
-  border:1px solid var(--border);
-  backdrop-filter:blur(10px);
-}
-
-.btn:hover{
-  transform:translateY(-4px) scale(1.03);
-}
-
-/* =========================================================
-TECH ORBITS
-========================================================= */
-
-.tech-orbit{
-  position:relative;
-  width:360px;
-  height:360px;
-}
-
-.orbit{
-  position:absolute;
-  inset:0;
-  border:1px solid rgba(255,255,255,0.08);
-  border-radius:50%;
-  animation:spin 16s linear infinite;
-}
-
-.orbit:nth-child(2){
-  inset:45px;
-  animation-direction:reverse;
-  animation-duration:10s;
-}
-
-.orbit:nth-child(3){
-  inset:90px;
-  animation-duration:7s;
-}
-
-.tech{
-  position:absolute;
-
-  width:65px;
-  height:65px;
-
-  border-radius:50%;
-  background:var(--glass);
-  border:1px solid var(--border);
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  backdrop-filter:blur(10px);
-
-  font-size:.8rem;
-  font-weight:700;
-  color:var(--gold);
-}
-
-@keyframes spin{
-  from{
-    transform:rotate(0deg);
+  :root {
+    --bg: #0a0a08;
+    --surface: #111110;
+    --border: rgba(255,255,255,0.08);
+    --text: #e8e4dc;
+    --muted: rgba(232,228,220,0.45);
+    --accent: #c9a96e;
+    --accent-dim: rgba(201,169,110,0.15);
+    --serif: "Playfair Display", Georgia, serif;
+    --sans: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
   }
-  to{
-    transform:rotate(360deg);
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.7;
+    overflow-x: hidden;
   }
-}
 
-/* =========================================================
-GRID
-========================================================= */
+  /* 3D Canvas */
+  #canvas-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
 
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-  gap:2rem;
-}
+  canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
 
-/* =========================================================
-GLASS CARD
-========================================================= */
+  /* Content Overlay */
+  .content-wrapper {
+    position: relative;
+    z-index: 100;
+  }
 
-.card{
-  position:relative;
-  overflow:hidden;
+  /* Navigation */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 300;
+    padding: 1.5rem 3rem;
+    background: linear-gradient(to bottom, rgba(10,10,8,0.85), transparent);
+    backdrop-filter: blur(8px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
 
-  padding:2rem;
+  .nav-logo {
+    font-family: var(--serif);
+    font-size: 1.3rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--text);
+    text-decoration: none;
+  }
 
-  border-radius:30px;
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    align-items: center;
+  }
 
-  background:var(--glass);
-  border:1px solid var(--border);
+  .nav-link {
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.3s;
+    cursor: pointer;
+  }
 
-  backdrop-filter:blur(18px);
+  .nav-link:hover {
+    color: var(--accent);
+  }
 
-  transition:.4s;
-  transform-style:preserve-3d;
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 6px;
+    cursor: pointer;
+  }
 
-  box-shadow:var(--shadow);
-}
+  .hamburger span {
+    width: 24px;
+    height: 2px;
+    background: var(--text);
+    border-radius: 2px;
+    transition: all 0.35s;
+  }
 
-.card::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:linear-gradient(
-    135deg,
-    rgba(255,255,255,0.08),
-    transparent
-  );
-  opacity:0;
-  transition:.4s;
-}
+  .hamburger.open span:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+  }
 
-.card:hover{
-  transform:translateY(-8px);
-  border-color:rgba(201,169,110,0.4);
-}
+  .hamburger.open span:nth-child(2) {
+    opacity: 0;
+  }
 
-.card:hover::before{
-  opacity:1;
-}
+  .hamburger.open span:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+  }
 
-.card h3{
-  font-family:'Cormorant Garamond',serif;
-  font-size:2rem;
-  margin-bottom:1rem;
-  color:var(--gold-light);
-}
+  /* Mobile Menu */
+  .mobile-menu {
+    position: fixed;
+    inset: 0;
+    z-index: 250;
+    background: rgba(10,10,8,0.95);
+    backdrop-filter: blur(10px);
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+  }
 
-.card p{
-  color:var(--muted);
-  line-height:1.8;
-}
+  .mobile-menu.open {
+    display: flex;
+  }
 
-/* =========================================================
-SKILLS
-========================================================= */
+  .mobile-menu a {
+    font-family: var(--serif);
+    font-size: 1.8rem;
+    color: var(--text);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
 
-.skill{
-  margin-bottom:2rem;
-}
+  .mobile-menu a:hover {
+    color: var(--accent);
+  }
 
-.skill-top{
-  display:flex;
-  justify-content:space-between;
-  margin-bottom:.8rem;
-}
+  /* Sections */
+  section {
+    min-height: 100vh;
+    padding: 8rem 3rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
 
-.skill-bar{
-  width:100%;
-  height:6px;
-  border-radius:20px;
-  overflow:hidden;
-  background:rgba(255,255,255,0.08);
-}
+  .hero-section {
+    padding-top: 10rem;
+  }
 
-.skill-fill{
-  height:100%;
-  width:0%;
-  border-radius:20px;
-  background:linear-gradient(to right,var(--gold),#fff2d0);
-}
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 2rem;
+    margin-bottom: 4rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
 
-/* =========================================================
-TIMELINE
-========================================================= */
+  .section-num {
+    font-family: var(--serif);
+    font-size: 1rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    min-width: 50px;
+  }
 
-.timeline{
-  position:relative;
-  margin-top:3rem;
-}
+  .section-title {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
 
-.timeline::before{
-  content:"";
-  position:absolute;
-  left:18px;
-  top:0;
-  width:2px;
-  height:100%;
-  background:rgba(255,255,255,0.1);
-}
+  /* Hero */
+  .hero-content h1 {
+    font-family: var(--serif);
+    font-size: clamp(3rem, 7vw, 5rem);
+    font-weight: 400;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    color: var(--text);
+  }
 
-.timeline-item{
-  position:relative;
-  margin-bottom:3rem;
-  padding-left:5rem;
-}
+  .hero-content em {
+    color: var(--accent);
+    font-style: italic;
+  }
 
-.timeline-item::before{
-  content:"";
-  position:absolute;
-  left:10px;
-  top:10px;
-  width:18px;
-  height:18px;
-  border-radius:50%;
-  background:var(--gold);
-  box-shadow:0 0 18px var(--gold);
-}
+  .hero-tagline {
+    font-size: 1.1rem;
+    color: var(--muted);
+    max-width: 600px;
+    margin-top: 2rem;
+    line-height: 1.8;
+  }
 
-/* =========================================================
-QUOTE
-========================================================= */
+  .hero-tags {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin: 2rem 0;
+  }
 
-.quote{
-  font-family:'Cormorant Garamond',serif;
-  font-size:2.5rem;
-  line-height:1.7;
-}
+  .hero-tag {
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.6em 1.5em;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    border-radius: 50px;
+  }
 
-.quote span{
-  color:var(--gold);
-}
+  .social-links {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 3rem;
+    flex-wrap: wrap;
+  }
 
-/* =========================================================
-FOOTER
-========================================================= */
+  .social-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 0.6em 1.5em;
+    border: 1px solid var(--border);
+    border-radius: 50px;
+    transition: all 0.3s;
+  }
 
-footer{
-  text-align:center;
-  padding:4rem 2rem;
-  color:var(--muted);
-  position:relative;
-  z-index:10;
-}
+  .social-link:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+    background: var(--accent-dim);
+  }
 
-/* =========================================================
-RESPONSIVE
-========================================================= */
+  /* About Grid */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+  }
 
-@media(max-width:1100px){
+  .about-text {
+    font-size: 1rem;
+    line-height: 1.9;
+    color: rgba(232,228,220,0.8);
+  }
 
-.hero{
-  flex-direction:column;
-  align-items:flex-start;
-}
+  .about-text strong {
+    color: var(--text);
+  }
 
-.tech-orbit{
-  margin:auto;
-}
+  .qualities-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 2rem;
+  }
 
-.hero h1{
-  font-size:5rem;
-}
+  .qualities-list {
+    list-style: none;
+  }
 
-}
+  .qualities-list li {
+    padding: 0.8rem 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.95rem;
+    color: rgba(232,228,220,0.75);
+    transition: color 0.3s;
+  }
 
-@media(max-width:800px){
+  .qualities-list li:hover {
+    color: var(--accent);
+  }
 
-.nav-links{
-  display:none;
-}
+  /* Education Card */
+  .edu-card {
+    background: rgba(17,17,16,0.5);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    padding: 3rem;
+    border-radius: 4px;
+    backdrop-filter: blur(8px);
+  }
 
-.hero h1{
-  font-size:3.7rem;
-}
+  .edu-degree {
+    font-family: var(--serif);
+    font-size: 2rem;
+    font-weight: 400;
+    margin-bottom: 0.5rem;
+  }
 
-.section-title{
-  font-size:3rem;
-}
+  .edu-college {
+    font-size: 0.95rem;
+    color: var(--muted);
+    margin-bottom: 1.5rem;
+  }
 
-.tech-orbit{
-  width:280px;
-  height:280px;
-}
+  .edu-badges {
+    display: flex;
+    gap: 1rem;
+    margin: 1.5rem 0;
+    flex-wrap: wrap;
+  }
 
-.quote{
-  font-size:1.8rem;
-}
+  .edu-badge {
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--accent-dim);
+    padding: 0.4em 1em;
+    border-radius: 2px;
+  }
 
-.buttons{
-  flex-direction:column;
-}
+  .edu-desc {
+    font-size: 0.95rem;
+    color: rgba(232,228,220,0.65);
+    line-height: 1.8;
+    margin-top: 1.5rem;
+  }
 
-.btn{
-  width:100%;
-  text-align:center;
-}
+  /* Skills Grid */
+  .skills-intro {
+    font-size: 1.05rem;
+    color: var(--muted);
+    margin-bottom: 3rem;
+    font-style: italic;
+  }
 
-section{
-  padding:7rem 1.5rem;
-}
+  .skills-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
 
-}
+  .skill-item {
+    background: rgba(17,17,16,0.5);
+    border: 1px solid var(--border);
+    padding: 1.8rem;
+    border-radius: 4px;
+    backdrop-filter: blur(8px);
+    transition: all 0.3s;
+  }
 
+  .skill-item:hover {
+    border-color: var(--accent);
+    background: rgba(201,169,110,0.05);
+  }
+
+  .skill-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.2rem;
+  }
+
+  .skill-name {
+    font-size: 0.95rem;
+    font-weight: 500;
+  }
+
+  .skill-tag {
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--accent-dim);
+    padding: 0.3em 0.9em;
+    border-radius: 2px;
+  }
+
+  .skill-bar {
+    height: 3px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 0.8rem;
+  }
+
+  .skill-fill {
+    height: 100%;
+    background: linear-gradient(to right, var(--accent), rgba(201,169,110,0.5));
+    border-radius: 2px;
+    width: 0;
+    animation: fillSkill 1.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+
+  @keyframes fillSkill {
+    to { width: var(--width); }
+  }
+
+  .skill-note {
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+
+  /* Interest Cards Grid */
+  .interests-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .interest-card {
+    background: rgba(17,17,16,0.5);
+    border: 1px solid var(--border);
+    padding: 2.5rem;
+    border-radius: 4px;
+    backdrop-filter: blur(8px);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .interest-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, var(--accent-dim), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+  }
+
+  .interest-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-4px);
+  }
+
+  .interest-card:hover::before {
+    opacity: 1;
+  }
+
+  .interest-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .interest-name {
+    font-family: var(--serif);
+    font-size: 1.4rem;
+    font-weight: 400;
+    margin-bottom: 0.8rem;
+  }
+
+  .interest-desc {
+    font-size: 0.9rem;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+
+  /* Projects Grid */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .project-card {
+    background: rgba(17,17,16,0.5);
+    border: 1px solid var(--border);
+    padding: 2.5rem;
+    border-radius: 4px;
+    backdrop-filter: blur(8px);
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .project-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-6px);
+  }
+
+  .project-num {
+    font-family: var(--serif);
+    font-size: 0.9rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    margin-bottom: 1rem;
+    opacity: 0.7;
+  }
+
+  .project-name {
+    font-family: var(--serif);
+    font-size: 1.5rem;
+    font-weight: 400;
+    margin-bottom: 0.8rem;
+  }
+
+  .project-desc {
+    font-size: 0.9rem;
+    color: var(--muted);
+    line-height: 1.75;
+    margin-bottom: 1.5rem;
+  }
+
+  .project-stack {
+    display: flex;
+    gap: 0.7rem;
+    flex-wrap: wrap;
+  }
+
+  .stack-tag {
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(232,228,220,0.5);
+    border: 1px solid var(--border);
+    padding: 0.35em 0.9em;
+    border-radius: 2px;
+    transition: all 0.3s;
+  }
+
+  .project-card:hover .stack-tag {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  /* Quotes */
+  .quote-section {
+    background: rgba(17,17,16,0.5);
+    border: 1px solid var(--border);
+    padding: 3rem;
+    border-radius: 4px;
+    backdrop-filter: blur(8px);
+  }
+
+  .quote-text {
+    font-family: var(--serif);
+    font-size: clamp(1.2rem, 3vw, 1.8rem);
+    font-style: italic;
+    font-weight: 300;
+    line-height: 1.8;
+    color: rgba(232,228,220,0.9);
+    margin-bottom: 1.5rem;
+  }
+
+  .quote-text em {
+    color: var(--accent);
+    font-style: normal;
+  }
+
+  .quote-author {
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .quote-controls {
+    display: flex;
+    gap: 0.8rem;
+    margin-top: 2rem;
+    align-items: center;
+  }
+
+  .quote-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--border);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .quote-dot.active {
+    background: var(--accent);
+    transform: scale(1.4);
+  }
+
+  .quote-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 0.6em 1.5em;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: all 0.3s;
+    margin-left: auto;
+  }
+
+  .quote-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  /* Connect Section */
+  .connect-body {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .connect-text {
+    font-size: 1rem;
+    line-height: 1.9;
+    color: rgba(232,228,220,0.7);
+    max-width: 700px;
+  }
+
+  .connect-buttons {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .connect-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 1em 2.5em;
+    border-radius: 50px;
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+
+  .connect-btn.primary {
+    background: var(--accent);
+    color: var(--bg);
+    border: 2px solid var(--accent);
+  }
+
+  .connect-btn.primary:hover {
+    transform: translateX(4px);
+    opacity: 0.9;
+  }
+
+  .connect-btn.secondary {
+    background: transparent;
+    color: var(--accent);
+    border: 2px solid var(--accent);
+  }
+
+  .connect-btn.secondary:hover {
+    background: var(--accent-dim);
+    transform: translateX(4px);
+  }
+
+  /* Footer */
+  footer {
+    padding: 3rem;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+  }
+
+  footer a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  footer a:hover {
+    text-decoration: underline;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    nav {
+      padding: 1.2rem 1.5rem;
+    }
+
+    .nav-links {
+      display: none;
+    }
+
+    .hamburger {
+      display: flex;
+    }
+
+    section {
+      padding: 6rem 1.5rem;
+    }
+
+    .about-grid,
+    .skills-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .hero-section {
+      padding-top: 8rem;
+    }
+
+    .section-title {
+      font-size: 2rem;
+    }
+
+    .interests-grid,
+    .projects-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .connect-buttons {
+      flex-direction: column;
+    }
+
+    .connect-btn {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+
+  /* Loading Animation */
+  .loading-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 400;
+    background: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+    transition: opacity 0.8s ease-out;
+    pointer-events: auto;
+  }
+
+  .loading-screen.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .loading-text {
+    font-family: var(--serif);
+    font-size: 1.5rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+  }
 </style>
 </head>
-
 <body>
 
-<!-- Progress -->
-<div class="progress-bar"></div>
+<div class="loading-screen" id="loadingScreen">
+  <div class="loading-text">Loading experience...</div>
+</div>
 
-<!-- Cursor -->
-<div class="cursor"></div>
-<div class="cursor-dot"></div>
-
-<!-- Glow -->
-<div class="glow"></div>
-
-<!-- 3D Canvas -->
 <div id="canvas-container"></div>
 
-<!-- NAV -->
+<div class="content-wrapper">
+  <!-- Navigation -->
+  <nav>
+    <a class="nav-logo" href="#">HVP</a>
+    <div class="nav-links">
+      <a class="nav-link" href="#about">About</a>
+      <a class="nav-link" href="#education">Education</a>
+      <a class="nav-link" href="#skills">Skills</a>
+      <a class="nav-link" href="#interests">Interests</a>
+      <a class="nav-link" href="#projects">Projects</a>
+      <a class="nav-link" href="#writing">Writing</a>
+      <a class="nav-link" href="#connect">Connect</a>
+    </div>
+    <div class="hamburger" id="hamburger">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
 
-<nav>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#about" onclick="closeMobileMenu()">About</a>
+    <a href="#education" onclick="closeMobileMenu()">Education</a>
+    <a href="#skills" onclick="closeMobileMenu()">Skills</a>
+    <a href="#interests" onclick="closeMobileMenu()">Interests</a>
+    <a href="#projects" onclick="closeMobileMenu()">Projects</a>
+    <a href="#writing" onclick="closeMobileMenu()">Writing</a>
+    <a href="#connect" onclick="closeMobileMenu()">Connect</a>
+  </div>
 
-<div class="logo">HVP</div>
+  <!-- Content Sections -->
+  <section id="hero" class="hero-section">
+    <div class="hero-content">
+      <p style="font-size: 0.95rem; color: var(--muted); margin-bottom: 2rem; letter-spacing: 0.12em; text-transform: uppercase;">Portfolio — 2026</p>
+      <h1>Hemanshu<br><em>Vikrant</em> Patil</h1>
+      <div class="hero-tags">
+        <span class="hero-tag">18 years old</span>
+        <span class="hero-tag">BCA Student</span>
+        <span class="hero-tag">Athlete</span>
+        <span class="hero-tag">Writer</span>
+      </div>
+      <p class="hero-tagline">Driven by curiosity, shaped by discipline, expressed through words.</p>
+      <div class="social-links">
+        <a class="social-link" href="https://www.linkedin.com/in/hemanshu-patil-10939a400" target="_blank" rel="noopener">LinkedIn ↗</a>
+        <a class="social-link" href="https://www.instagram.com/hemanshuvp_631/" target="_blank" rel="noopener">Instagram ↗</a>
+      </div>
+    </div>
+  </section>
 
-<div class="nav-links">
-<a href="#about">About</a>
-<a href="#skills">Skills</a>
-<a href="#education">Education</a>
-<a href="#projects">Projects</a>
-<a href="#writing">Writing</a>
-<a href="#connect">Connect</a>
+  <section id="about">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <h2 class="section-title">About Me</h2>
+    </div>
+    <div class="about-grid">
+      <div>
+        <p class="about-text">
+          I am a first-year BCA student at <strong>Sinhgad College of Science</strong>, Pune. At 18, I am building my foundation in computer science while pursuing excellence in athletics and the written word.<br><br>
+          My approach to everything — whether it is a new technology, a training routine, or crafting a verse — is grounded in one principle: <strong>learn fast, apply faster.</strong><br><br>
+          I believe discipline is not something you are born with. It is something you build — rep by rep, line by line, day by day.
+        </p>
+      </div>
+      <div>
+        <p class="qualities-label">Core Qualities</p>
+        <ul class="qualities-list">
+          <li>Quick Learner</li>
+          <li>Sharp Analytical Mind</li>
+          <li>Self-Disciplined</li>
+          <li>Adaptable & Resilient</li>
+          <li>History Lover</li>
+          <li>Critical Thinker</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="education">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <h2 class="section-title">Education</h2>
+    </div>
+    <div class="edu-card">
+      <h3 class="edu-degree">Bachelor of Computer Applications</h3>
+      <p class="edu-college">Sinhgad College of Science, Pune</p>
+      <div class="edu-badges">
+        <span class="edu-badge">First Year</span>
+        <span class="edu-badge">2025 – Present</span>
+        <span class="edu-badge">BCA</span>
+      </div>
+      <p class="edu-desc">
+        Pursuing a three-year undergraduate program covering data structures, algorithms, software engineering, and modern computing paradigms. Every concept learned is treated as a brick — slowly building something that lasts.
+      </p>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <h2 class="section-title">Skills</h2>
+    </div>
+    <p class="skills-intro">I am a learner, not an expert — and I think that is the most honest place to start from.</p>
+    <div class="skills-grid">
+      <div class="skill-item">
+        <div class="skill-header">
+          <span class="skill-name">HTML & CSS</span>
+          <span class="skill-tag">Getting Comfortable</span>
+        </div>
+        <div class="skill-bar"><div class="skill-fill" style="--width: 60%"></div></div>
+        <p class="skill-note">Building pages, understanding structure and style.</p>
+      </div>
+      <div class="skill-item">
+        <div class="skill-header">
+          <span class="skill-name">C Programming</span>
+          <span class="skill-tag">Learning</span>
+        </div>
+        <div class="skill-bar"><div class="skill-fill" style="--width: 45%"></div></div>
+        <p class="skill-note">Fundamentals, logic building, and problem solving.</p>
+      </div>
+      <div class="skill-item">
+        <div class="skill-header">
+          <span class="skill-name">Python</span>
+          <span class="skill-tag">Learning</span>
+        </div>
+        <div class="skill-bar"><div class="skill-fill" style="--width: 40%"></div></div>
+        <p class="skill-note">Exploring syntax, scripts, and small automations.</p>
+      </div>
+      <div class="skill-item">
+        <div class="skill-header">
+          <span class="skill-name">SQL</span>
+          <span class="skill-tag">Learning</span>
+        </div>
+        <div class="skill-bar"><div class="skill-fill" style="--width: 35%"></div></div>
+        <p class="skill-note">Queries, tables, and understanding data relationships.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="interests">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <h2 class="section-title">Beyond the Classroom</h2>
+    </div>
+    <div class="interests-grid">
+      <div class="interest-card">
+        <span class="interest-icon">🏋️</span>
+        <h3 class="interest-name">Powerlifting</h3>
+        <p class="interest-desc">Iron discipline. The barbell teaches patience, consistency, and the value of incremental progress.</p>
+      </div>
+      <div class="interest-card">
+        <span class="interest-icon">🥊</span>
+        <h3 class="interest-name">Boxing</h3>
+        <p class="interest-desc">Precision under pressure. The sweet science of reading your opponent and responding with clarity.</p>
+      </div>
+      <div class="interest-card">
+        <span class="interest-icon">🏊</span>
+        <h3 class="interest-name">Swimming</h3>
+        <p class="interest-desc">Flow, breath, and rhythm. Water demands you to be fully present in every stroke.</p>
+      </div>
+      <div class="interest-card">
+        <span class="interest-icon">✍️</span>
+        <h3 class="interest-name">Writing</h3>
+        <p class="interest-desc">Quotes, poems, and shayaris — crafting emotions into language, one line at a time.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="section-header">
+      <span class="section-num">05</span>
+      <h2 class="section-title">Projects</h2>
+    </div>
+    <div class="projects-grid">
+      <div class="project-card">
+        <p class="project-num">001</p>
+        <h3 class="project-name">Personal Portfolio</h3>
+        <p class="project-desc">This website itself — designed and built from scratch. A fully 3D interactive journey that showcases creativity and technical skill.</p>
+        <div class="project-stack">
+          <span class="stack-tag">HTML</span>
+          <span class="stack-tag">CSS</span>
+          <span class="stack-tag">Three.js</span>
+        </div>
+      </div>
+      <div class="project-card">
+        <p class="project-num">002</p>
+        <h3 class="project-name">Student Grade Calculator</h3>
+        <p class="project-desc">A simple C program that takes subject marks as input and calculates total, percentage, and grade. Small project, clean logic.</p>
+        <div class="project-stack">
+          <span class="stack-tag">C</span>
+          <span class="stack-tag">Logic Building</span>
+        </div>
+      </div>
+      <div class="project-card">
+        <p class="project-num">003</p>
+        <h3 class="project-name">Library Book Tracker</h3>
+        <p class="project-desc">A basic database schema to track books, members, and borrow history. Built to practice SQL queries and table relationships.</p>
+        <div class="project-stack">
+          <span class="stack-tag">SQL</span>
+          <span class="stack-tag">Database Design</span>
+        </div>
+      </div>
+      <div class="project-card" style="border-style: dashed; border-color: rgba(201,169,110,0.2);">
+        <p class="project-num" style="opacity: 0.3;">00∞</p>
+        <h3 class="project-name" style="color: var(--muted); font-style: italic;">Work in Progress</h3>
+        <p class="project-desc">More projects are being built — this space is reserved for whatever comes next. The best work is still ahead.</p>
+        <div class="project-stack">
+          <span class="stack-tag">Coming Soon</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="writing">
+    <div class="section-header">
+      <span class="section-num">06</span>
+      <h2 class="section-title">Writing</h2>
+    </div>
+    <div class="quote-section">
+      <div id="quoteContainer">
+        <p class="quote-text">
+          Kuch lutt gaya kuch luta diya,<br>
+          kuch mitt gaya kuch mita diya.<br>
+          Zindagi ne kuch yun aazmaya humein —<br>
+          <em>kuch chinn gaya, kuch gawa diya.</em>
+        </p>
+        <p class="quote-author">— Hemanshu Vikrant Patil</p>
+      </div>
+      <div class="quote-controls">
+        <button class="quote-dot active" onclick="goQuote(0)"></button>
+        <button class="quote-dot" onclick="goQuote(1)"></button>
+        <button class="quote-dot" onclick="goQuote(2)"></button>
+        <button class="quote-dot" onclick="goQuote(3)"></button>
+        <button class="quote-btn" onclick="nextQuote()">next →</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="connect">
+    <div class="section-header">
+      <span class="section-num">07</span>
+      <h2 class="section-title">Let's Connect</h2>
+    </div>
+    <div class="connect-body">
+      <p class="connect-text">
+        Open to conversations about technology, athletics, creative writing, or life in general. Find me on LinkedIn for professional conversations — or follow me on Instagram for a glimpse into the everyday grind.
+      </p>
+      <div class="connect-buttons">
+        <a class="connect-btn primary" href="https://www.linkedin.com/in/hemanshu-patil-10939a400" target="_blank" rel="noopener">
+          Connect on LinkedIn →
+        </a>
+        <a class="connect-btn secondary" href="https://www.instagram.com/hemanshuvp_631/" target="_blank" rel="noopener">
+          Follow on Instagram →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2026 <a href="#">Hemanshu Vikrant Patil</a> — BCA Student at Sinhgad College of Science, Pune</p>
+  </footer>
 </div>
 
-<div class="toggle"></div>
-
-</nav>
-
-<!-- HERO -->
-
-<section class="hero">
-
-<div class="hero-content">
-
-<div class="hero-sub reveal">
-Luxury 3D Portfolio — 2026
-</div>
-
-<h1 class="reveal">
-Hemanshu <br>
-<span>Vikrant</span> Patil
-</h1>
-
-<p class="reveal">
-BCA student, athlete, writer, and frontend developer from Pune.
-Building immersive digital experiences with discipline, creativity, and modern web technologies.
-</p>
-
-<div class="buttons reveal">
-
-<a href="#projects" class="btn btn-primary magnetic">
-Explore Projects
-</a>
-
-<a href="https://www.linkedin.com/in/hemanshu-patil-10939a400"
-target="_blank"
-class="btn btn-secondary magnetic">
-LinkedIn
-</a>
-
-</div>
-
-</div>
-
-<!-- Floating Tech Stack -->
-
-<div class="tech-orbit">
-
-<div class="orbit">
-<div class="tech" style="top:-18px;left:145px;">HTML</div>
-</div>
-
-<div class="orbit">
-<div class="tech" style="top:120px;right:-18px;">CSS</div>
-</div>
-
-<div class="orbit">
-<div class="tech" style="bottom:-18px;left:120px;">JS</div>
-</div>
-
-</div>
-
-</section>
-
-<!-- ABOUT -->
-
-<section id="about">
-
-<h2 class="section-title reveal">
-About Me
-</h2>
-
-<div class="grid">
-
-<div class="card tilt">
-<h3>Who I Am</h3>
-<p>
-I am Hemanshu Vikrant Patil, a first-year BCA student at Sinhgad College of Science, Pune. Passionate about technology, design, fitness, and creative expression.
-</p>
-</div>
-
-<div class="card tilt">
-<h3>Mindset</h3>
-<p>
-Discipline is built through repetition. Whether learning code, training physically, or writing poetry — consistency matters more than motivation.
-</p>
-</div>
-
-<div class="card tilt">
-<h3>Interests</h3>
-<p>
-Powerlifting, boxing, swimming, history, UI/UX design, frontend development, and writing shayari and quotes.
-</p>
-</div>
-
-</div>
-
-</section>
-
-<!-- SKILLS -->
-
-<section id="skills">
-
-<h2 class="section-title reveal">
-Skills & Tech Stack
-</h2>
-
-<div class="card">
-
-<div class="skill">
-
-<div class="skill-top">
-<span>HTML & CSS</span>
-<span>90%</span>
-</div>
-
-<div class="skill-bar">
-<div class="skill-fill" data-width="90%"></div>
-</div>
-
-</div>
-
-<div class="skill">
-
-<div class="skill-top">
-<span>JavaScript</span>
-<span>75%</span>
-</div>
-
-<div class="skill-bar">
-<div class="skill-fill" data-width="75%"></div>
-</div>
-
-</div>
-
-<div class="skill">
-
-<div class="skill-top">
-<span>C Programming</span>
-<span>70%</span>
-</div>
-
-<div class="skill-bar">
-<div class="skill-fill" data-width="70%"></div>
-</div>
-
-</div>
-
-<div class="skill">
-
-<div class="skill-top">
-<span>Three.js</span>
-<span>60%</span>
-</div>
-
-<div class="skill-bar">
-<div class="skill-fill" data-width="60%"></div>
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-<!-- EDUCATION -->
-
-<section id="education">
-
-<h2 class="section-title reveal">
-Education
-</h2>
-
-<div class="timeline">
-
-<div class="timeline-item reveal">
-
-<div class="card">
-<h3>Bachelor of Computer Applications</h3>
-<p>
-Sinhgad College of Science, Pune <br><br>
-2025 — Present
-</p>
-</div>
-
-</div>
-
-<div class="timeline-item reveal">
-
-<div class="card">
-<h3>Developer Journey</h3>
-<p>
-Learning modern web development, UI/UX, animations, Three.js, and immersive frontend experiences.
-</p>
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-<!-- PROJECTS -->
-
-<section id="projects">
-
-<h2 class="section-title reveal">
-Featured Projects
-</h2>
-
-<div class="grid">
-
-<div class="card tilt">
-
-<h3>3D Portfolio</h3>
-
-<p>
-A cinematic luxury portfolio featuring Three.js particles, glassmorphism, smooth scrolling, magnetic interactions, and immersive UI animations.
-</p>
-
-</div>
-
-<div class="card tilt">
-
-<h3>Student Grade Calculator</h3>
-
-<p>
-A clean C programming project that calculates total marks, percentage, and grades using structured logic.
-</p>
-
-</div>
-
-<div class="card tilt">
-
-<h3>Library Book Tracker</h3>
-
-<p>
-SQL database project designed to manage books, members, and borrow history efficiently.
-</p>
-
-</div>
-
-</div>
-
-</section>
-
-<!-- WRITING -->
-
-<section id="writing">
-
-<h2 class="section-title reveal">
-Writing
-</h2>
-
-<div class="card">
-
-<p class="quote">
-“Kuch lutt gaya kuch luta diya,<br>
-kuch mitt gaya kuch mita diya.<br>
-Zindagi ne kuch yun aazmaya humein —<br>
-<span>kuch chinn gaya, kuch gawa diya.</span>”
-</p>
-
-</div>
-
-</section>
-
-<!-- CONNECT -->
-
-<section id="connect">
-
-<h2 class="section-title reveal">
-Let's Connect
-</h2>
-
-<div class="grid">
-
-<div class="card tilt">
-
-<h3>LinkedIn</h3>
-
-<p>
-Professional updates, networking, and projects.
-</p>
-
-<br>
-
-<a href="https://www.linkedin.com/in/hemanshu-patil-10939a400"
-target="_blank"
-class="btn btn-primary magnetic">
-Open LinkedIn
-</a>
-
-</div>
-
-<div class="card tilt">
-
-<h3>Instagram</h3>
-
-<p>
-Fitness, lifestyle, creativity, and everyday grind.
-</p>
-
-<br>
-
-<a href="https://www.instagram.com/hemanshuvp_631/"
-target="_blank"
-class="btn btn-secondary magnetic">
-Open Instagram
-</a>
-
-</div>
-
-</div>
-
-</section>
-
-<footer>
-© 2026 Hemanshu Vikrant Patil — Crafted with discipline, creativity & code.
-</footer>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
+// ============ THREE.JS SETUP ============
+let scene, camera, renderer, particles;
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
 
-/* =========================================================
-LENIS
-========================================================= */
+function initThreeJS() {
+  const container = document.getElementById('canvas-container');
+  
+  // Scene
+  scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x0a0a08);
+  scene.fog = new THREE.Fog(0x0a0a08, 100, 1000);
 
-const lenis = new Lenis({
-  duration:1.2,
-  smoothWheel:true
-});
+  // Camera
+  camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+  camera.position.z = 50;
 
-function raf(time){
-  lenis.raf(time);
-  requestAnimationFrame(raf);
+  // Renderer
+  renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.shadowMap.enabled = true;
+  container.appendChild(renderer.domElement);
+
+  // Lighting
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+  scene.add(ambientLight);
+
+  const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+  directionalLight.position.set(50, 50, 50);
+  directionalLight.castShadow = true;
+  directionalLight.shadow.mapSize.width = 2048;
+  directionalLight.shadow.mapSize.height = 2048;
+  scene.add(directionalLight);
+
+  const pointLight = new THREE.PointLight(0xc9a96e, 0.5, 200);
+  pointLight.position.set(0, 30, 30);
+  scene.add(pointLight);
+
+  // Create particles
+  createParticles();
+
+  // Create floating objects
+  createFloatingObjects();
+
+  // Event listeners
+  window.addEventListener('resize', onWindowResize);
+  window.addEventListener('mousemove', onMouseMove);
+  document.addEventListener('scroll', onScroll);
+
+  // Start animation loop
+  animate();
+
+  // Hide loading screen after scene is ready
+  setTimeout(() => {
+    document.getElementById('loadingScreen').classList.add('hidden');
+  }, 800);
 }
 
-requestAnimationFrame(raf);
-
-/* =========================================================
-CURSOR
-========================================================= */
-
-const cursor = document.querySelector(".cursor");
-const cursorDot = document.querySelector(".cursor-dot");
-
-window.addEventListener("mousemove",(e)=>{
-
-  gsap.to(cursor,{
-    x:e.clientX,
-    y:e.clientY,
-    duration:0.25
-  });
-
-  gsap.to(cursorDot,{
-    x:e.clientX,
-    y:e.clientY,
-    duration:0.08
-  });
-
-});
-
-/* =========================================================
-MAGNETIC BUTTONS
-========================================================= */
-
-document.querySelectorAll(".magnetic").forEach(button=>{
-
-button.addEventListener("mousemove",(e)=>{
-
-  const rect = button.getBoundingClientRect();
-
-  const x = e.clientX - rect.left - rect.width/2;
-  const y = e.clientY - rect.top - rect.height/2;
-
-  gsap.to(button,{
-    x:x*0.2,
-    y:y*0.2,
-    duration:0.3
-  });
-
-});
-
-button.addEventListener("mouseleave",()=>{
-
-  gsap.to(button,{
-    x:0,
-    y:0,
-    duration:0.3
-  });
-
-});
-
-});
-
-/* =========================================================
-3D TILT CARDS
-========================================================= */
-
-document.querySelectorAll(".tilt").forEach(card=>{
-
-card.addEventListener("mousemove",(e)=>{
-
-  const rect = card.getBoundingClientRect();
-
-  const x = e.clientX - rect.left;
-  const y = e.clientY - rect.top;
-
-  const rotateX = -((y / rect.height)-0.5)*10;
-  const rotateY = ((x / rect.width)-0.5)*10;
-
-  card.style.transform = `
-    perspective(1200px)
-    rotateX(${rotateX}deg)
-    rotateY(${rotateY}deg)
-    translateY(-8px)
-  `;
-
-});
-
-card.addEventListener("mouseleave",()=>{
-
-  card.style.transform = `
-    perspective(1200px)
-    rotateX(0deg)
-    rotateY(0deg)
-    translateY(0px)
-  `;
-
-});
-
-});
-
-/* =========================================================
-SCROLL PROGRESS
-========================================================= */
-
-window.addEventListener("scroll",()=>{
-
-const scrollTop = window.scrollY;
-
-const docHeight =
-document.body.scrollHeight - window.innerHeight;
-
-const progress =
-(scrollTop/docHeight)*100;
-
-document.querySelector(".progress-bar")
-.style.width = progress + "%";
-
-});
-
-/* =========================================================
-GSAP ANIMATIONS
-========================================================= */
-
-gsap.registerPlugin(ScrollTrigger);
-
-gsap.utils.toArray(".reveal").forEach(element=>{
-
-gsap.from(element,{
-  opacity:0,
-  y:80,
-  duration:1.1,
-  ease:"power4.out",
-  scrollTrigger:{
-    trigger:element,
-    start:"top 85%"
+function createParticles() {
+  const geometry = new THREE.BufferGeometry();
+  const particleCount = 100;
+  const positions = new Float32Array(particleCount * 3);
+  
+  for (let i = 0; i < particleCount * 3; i += 3) {
+    positions[i] = (Math.random() - 0.5) * 200;
+    positions[i + 1] = (Math.random() - 0.5) * 200;
+    positions[i + 2] = (Math.random() - 0.5) * 200;
   }
-});
 
-});
+  geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
 
-/* =========================================================
-SKILL BAR
-========================================================= */
+  const material = new THREE.PointsMaterial({
+    color: 0xc9a96e,
+    size: 0.5,
+    sizeAttenuation: true,
+    opacity: 0.3,
+    transparent: true
+  });
 
-document.querySelectorAll(".skill-fill").forEach(bar=>{
+  particles = new THREE.Points(geometry, material);
+  scene.add(particles);
+}
 
-gsap.to(bar,{
-  width:bar.dataset.width,
-  duration:1.8,
-  ease:"power3.out",
-  scrollTrigger:{
-    trigger:bar,
-    start:"top 90%"
+function createFloatingObjects() {
+  // Create geometric shapes that float around
+  const shapes = [];
+  
+  for (let i = 0; i < 5; i++) {
+    const geometries = [
+      new THREE.IcosahedronGeometry(2, 2),
+      new THREE.OctahedronGeometry(2),
+      new THREE.TetrahedronGeometry(3)
+    ];
+    
+    const geometry = geometries[Math.floor(Math.random() * geometries.length)];
+    const material = new THREE.MeshPhongMaterial({
+      color: 0xc9a96e,
+      emissive: 0x4a4029,
+      wireframe: true,
+      opacity: 0.1,
+      transparent: true
+    });
+    
+    const shape = new THREE.Mesh(geometry, material);
+    shape.position.set(
+      (Math.random() - 0.5) * 150,
+      (Math.random() - 0.5) * 150,
+      (Math.random() - 0.5) * 150
+    );
+    
+    shape.rotation.x = Math.random() * Math.PI;
+    shape.rotation.y = Math.random() * Math.PI;
+    
+    shape.userData.rotationSpeed = {
+      x: (Math.random() - 0.5) * 0.003,
+      y: (Math.random() - 0.5) * 0.003,
+      z: (Math.random() - 0.5) * 0.003
+    };
+    
+    scene.add(shape);
+    shapes.push(shape);
   }
-});
 
-});
-
-/* =========================================================
-DARK MODE
-========================================================= */
-
-document.querySelector(".toggle")
-.addEventListener("click",()=>{
-
-document.body.classList.toggle("light");
-
-});
-
-/* =========================================================
-THREE JS
-========================================================= */
-
-const scene = new THREE.Scene();
-
-const camera = new THREE.PerspectiveCamera(
-75,
-window.innerWidth/window.innerHeight,
-0.1,
-1000
-);
-
-camera.position.z = 40;
-
-const renderer = new THREE.WebGLRenderer({
-alpha:true,
-antialias:true
-});
-
-renderer.setSize(
-window.innerWidth,
-window.innerHeight
-);
-
-renderer.setPixelRatio(
-Math.min(window.devicePixelRatio,2)
-);
-
-document
-.getElementById("canvas-container")
-.appendChild(renderer.domElement);
-
-/* =========================================================
-PARTICLES
-========================================================= */
-
-const particlesGeometry =
-new THREE.BufferGeometry();
-
-const particleCount = 2500;
-
-const positions =
-new Float32Array(particleCount * 3);
-
-for(let i=0;i<particleCount*3;i++){
-
-positions[i] =
-(Math.random()-0.5)*200;
-
+  scene.userData.shapes = shapes;
 }
 
-particlesGeometry.setAttribute(
-'position',
-new THREE.BufferAttribute(positions,3)
-);
+function animate() {
+  requestAnimationFrame(animate);
 
-const particlesMaterial =
-new THREE.PointsMaterial({
-  size:0.12,
-  color:"#c9a96e",
-  transparent:true,
-  opacity:0.75
-});
+  // Rotate particles
+  if (particles) {
+    particles.rotation.x += 0.0001;
+    particles.rotation.y += 0.0002;
+  }
 
-const particlesMesh =
-new THREE.Points(
-particlesGeometry,
-particlesMaterial
-);
+  // Rotate floating shapes
+  if (scene.userData.shapes) {
+    scene.userData.shapes.forEach(shape => {
+      shape.rotation.x += shape.userData.rotationSpeed.x;
+      shape.rotation.y += shape.userData.rotationSpeed.y;
+      shape.rotation.z += shape.userData.rotationSpeed.z;
+    });
+  }
 
-scene.add(particlesMesh);
-
-/* =========================================================
-FLOATING OBJECTS
-========================================================= */
-
-const floatingObjects = [];
-
-for(let i=0;i<10;i++){
-
-const geometry =
-new THREE.IcosahedronGeometry(
-Math.random()*1.3+0.5,
-1
-);
-
-const material =
-new THREE.MeshStandardMaterial({
-  color:"#c9a96e",
-  wireframe:true,
-  transparent:true,
-  opacity:0.25
-});
-
-const mesh =
-new THREE.Mesh(
-geometry,
-material
-);
-
-mesh.position.set(
-(Math.random()-0.5)*80,
-(Math.random()-0.5)*80,
-(Math.random()-0.5)*80
-);
-
-scene.add(mesh);
-
-floatingObjects.push(mesh);
-
+  renderer.render(scene, camera);
 }
 
-/* =========================================================
-LIGHTS
-========================================================= */
-
-const ambientLight =
-new THREE.AmbientLight(
-0xffffff,
-0.5
-);
-
-scene.add(ambientLight);
-
-const pointLight =
-new THREE.PointLight(
-0xc9a96e,
-1.2
-);
-
-pointLight.position.set(20,20,20);
-
-scene.add(pointLight);
-
-/* =========================================================
-MOUSE PARALLAX
-========================================================= */
-
-let mouseX = 0;
-let mouseY = 0;
-
-document.addEventListener("mousemove",(e)=>{
-
-mouseX =
-(e.clientX/window.innerWidth - 0.5)*2;
-
-mouseY =
-(e.clientY/window.innerHeight - 0.5)*2;
-
-});
-
-/* =========================================================
-ANIMATION LOOP
-========================================================= */
-
-function animate(){
-
-requestAnimationFrame(animate);
-
-particlesMesh.rotation.y += 0.0006;
-
-floatingObjects.forEach((obj,index)=>{
-
-obj.rotation.x += 0.002;
-obj.rotation.y += 0.003;
-
-obj.position.y +=
-Math.sin(Date.now()*0.001 + index)
-*0.003;
-
-});
-
-camera.position.x +=
-(mouseX * 6 - camera.position.x)
-*0.03;
-
-camera.position.y +=
-(-mouseY * 6 - camera.position.y)
-*0.03;
-
-renderer.render(scene,camera);
-
+function onWindowResize() {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
-animate();
+function onMouseMove(event) {
+  mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+  mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
-/* =========================================================
-RESIZE
-========================================================= */
+  // Subtle camera follow
+  const targetX = mouse.x * 5;
+  const targetY = mouse.y * 5;
+  camera.position.x += (targetX - camera.position.x) * 0.05;
+  camera.position.y += (targetY - camera.position.y) * 0.05;
+  camera.lookAt(scene.position);
+}
 
-window.addEventListener("resize",()=>{
+function onScroll() {
+  const scrollY = window.scrollY;
+  camera.position.z = 50 + scrollY * 0.05;
+}
 
-camera.aspect =
-window.innerWidth/window.innerHeight;
-
-camera.updateProjectionMatrix();
-
-renderer.setSize(
-window.innerWidth,
-window.innerHeight
-);
-
+// ============ UI INTERACTIONS ============
+document.getElementById('hamburger').addEventListener('click', () => {
+  document.getElementById('hamburger').classList.toggle('open');
+  document.getElementById('mobileMenu').classList.toggle('open');
 });
 
-/* =========================================================
-AMBIENT GLOW MOTION
-========================================================= */
+function closeMobileMenu() {
+  document.getElementById('hamburger').classList.remove('open');
+  document.getElementById('mobileMenu').classList.remove('open');
+}
 
-window.addEventListener("scroll",()=>{
+// Quote carousel
+const quotes = [
+  {
+    text: `Kuch lutt gaya kuch luta diya,<br>kuch mitt gaya kuch mita diya.<br>Zindagi ne kuch yun aazmaya humein —<br><em>kuch chinn gaya, kuch gawa diya.</em>`,
+    author: 'Hemanshu Vikrant Patil'
+  },
+  {
+    text: `Strength is not always loud —<br><em>sometimes it is the quiet discipline<br>of showing up, every single day.</em>`,
+    author: 'Hemanshu Vikrant Patil'
+  },
+  {
+    text: `Some weights are not iron —<br>they are the years that shaped you,<br>the mornings you chose the barbell<br><em>over going back to sleep.</em>`,
+    author: 'Hemanshu Vikrant Patil'
+  },
+  {
+    text: `I have not arrived yet —<br>but the road beneath my feet<br><em>already knows my name.</em>`,
+    author: 'Hemanshu Vikrant Patil'
+  }
+];
 
-const scroll = window.scrollY;
+let currentQuote = 0;
 
-document.querySelector(".glow")
-.style.transform =
-`translateY(${scroll*0.2}px)`;
+function goQuote(n) {
+  const dots = document.querySelectorAll('.quote-dot');
+  dots[currentQuote].classList.remove('active');
+  currentQuote = n;
+  dots[currentQuote].classList.add('active');
+  
+  const container = document.getElementById('quoteContainer');
+  container.style.opacity = '0';
+  setTimeout(() => {
+    container.innerHTML = `
+      <p class="quote-text">${quotes[currentQuote].text}</p>
+      <p class="quote-author">— ${quotes[currentQuote].author}</p>
+    `;
+    container.style.opacity = '1';
+  }, 300);
+}
 
+function nextQuote() {
+  goQuote((currentQuote + 1) % quotes.length);
+}
+
+// Auto-rotate quotes every 6 seconds
+setInterval(nextQuote, 6000);
+
+// Add smooth transition
+const quoteContainer = document.getElementById('quoteContainer');
+quoteContainer.style.transition = 'opacity 0.3s ease';
+
+// Smooth scroll for nav links
+document.querySelectorAll('a[href^="#"]').forEach(link => {
+  link.addEventListener('click', (e) => {
+    e.preventDefault();
+    const target = document.querySelector(link.getAttribute('href'));
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth' });
+      closeMobileMenu();
+    }
+  });
 });
 
+// Initialize when DOM is ready
+document.addEventListener('DOMContentLoaded', initThreeJS);
+
+// Error handling
+window.addEventListener('error', (e) => {
+  console.error('Error:', e.error);
+});
+
+window.addEventListener('unhandledrejection', (e) => {
+  console.error('Unhandled rejection:', e.reason);
+});
 </script>
-
 </body>
 </html>
