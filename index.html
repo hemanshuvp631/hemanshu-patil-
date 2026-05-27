@@ -4,38 +4,56 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<title>Hemanshu Vikrant Patil — 3D Luxury Portfolio</title>
+<title>Hemanshu Vikrant Patil | 3D Portfolio</title>
+
+<meta name="description" content="Luxury 3D Portfolio of Hemanshu Vikrant Patil — BCA Student, Developer, Athlete & Writer."/>
 
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <!-- GSAP -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 
-<!-- Lenis -->
+<!-- LENIS -->
 <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/bundled/lenis.min.js"></script>
 
-<!-- Three JS -->
+<!-- THREE JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
 <style>
 
+/* =========================================================
+ROOT
+========================================================= */
+
 :root{
-  --bg:#060606;
+  --bg:#050505;
   --bg2:#0e0e0e;
-  --glass:rgba(255,255,255,0.06);
-  --glass2:rgba(255,255,255,0.03);
+  --text:#f4f1ea;
+  --muted:rgba(255,255,255,0.6);
   --gold:#c9a96e;
-  --gold2:#f5d9a2;
-  --text:#f3efe8;
-  --muted:rgba(255,255,255,0.55);
+  --gold-light:#f3d9a6;
+  --glass:rgba(255,255,255,0.05);
   --border:rgba(255,255,255,0.08);
   --shadow:0 10px 40px rgba(0,0,0,0.4);
 }
+
+.light{
+  --bg:#f5f1e8;
+  --bg2:#ffffff;
+  --text:#111111;
+  --muted:rgba(0,0,0,0.6);
+  --glass:rgba(255,255,255,0.45);
+  --border:rgba(0,0,0,0.08);
+}
+
+/* =========================================================
+RESET
+========================================================= */
 
 *{
   margin:0;
@@ -48,39 +66,46 @@ html{
 }
 
 body{
+  font-family:'Inter',sans-serif;
   background:var(--bg);
   color:var(--text);
-  font-family:'Inter',sans-serif;
   overflow-x:hidden;
+  transition:background .4s,color .4s;
 }
 
-/* Noise Overlay */
+/* =========================================================
+NOISE OVERLAY
+========================================================= */
 
 body::before{
   content:"";
   position:fixed;
   inset:0;
   background-image:
-  radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px);
-  background-size:3px 3px;
-  opacity:.12;
+  radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px);
+  background-size:4px 4px;
+  opacity:.06;
+  z-index:99999;
   pointer-events:none;
-  z-index:9999;
 }
 
-/* Scroll Progress */
+/* =========================================================
+SCROLL PROGRESS
+========================================================= */
 
-.progress{
+.progress-bar{
   position:fixed;
   top:0;
   left:0;
-  width:0%;
   height:3px;
-  background:linear-gradient(to right,var(--gold),#fff2d0);
-  z-index:99999;
+  width:0%;
+  z-index:999999;
+  background:linear-gradient(to right,var(--gold),#fff2cf);
 }
 
-/* Custom Cursor */
+/* =========================================================
+CUSTOM CURSOR
+========================================================= */
 
 .cursor{
   width:18px;
@@ -89,24 +114,26 @@ body::before{
   border-radius:50%;
   position:fixed;
   pointer-events:none;
+  z-index:999999;
   transform:translate(-50%,-50%);
-  z-index:99999;
-  transition:transform .1s ease;
-  backdrop-filter:blur(2px);
+  transition:transform .15s ease;
+  backdrop-filter:blur(4px);
 }
 
 .cursor-dot{
-  width:6px;
-  height:6px;
+  width:5px;
+  height:5px;
   background:var(--gold);
   border-radius:50%;
   position:fixed;
   pointer-events:none;
+  z-index:999999;
   transform:translate(-50%,-50%);
-  z-index:99999;
 }
 
-/* Canvas */
+/* =========================================================
+3D CANVAS
+========================================================= */
 
 #canvas-container{
   position:fixed;
@@ -114,42 +141,51 @@ body::before{
   z-index:1;
 }
 
-/* Ambient Glow */
+/* =========================================================
+AMBIENT GLOW
+========================================================= */
 
-.ambient{
+.glow{
   position:fixed;
-  width:600px;
-  height:600px;
+  width:700px;
+  height:700px;
   background:radial-gradient(circle,var(--gold),transparent 70%);
   opacity:.08;
   filter:blur(120px);
   top:-200px;
-  right:-150px;
-  z-index:0;
+  right:-200px;
   pointer-events:none;
+  z-index:0;
 }
 
-/* Navbar */
+/* =========================================================
+NAVBAR
+========================================================= */
 
 nav{
   position:fixed;
   top:0;
+  left:0;
   width:100%;
-  z-index:999;
-  padding:1.5rem 5vw;
+  z-index:9999;
+
   display:flex;
-  justify-content:space-between;
   align-items:center;
+  justify-content:space-between;
+
+  padding:1.5rem 6vw;
+
   backdrop-filter:blur(16px);
-  background:rgba(0,0,0,0.2);
-  border-bottom:1px solid rgba(255,255,255,0.04);
+  background:rgba(0,0,0,0.25);
+
+  border-bottom:1px solid rgba(255,255,255,0.05);
 }
 
 .logo{
   font-size:1.4rem;
-  font-weight:700;
-  color:var(--gold2);
-  letter-spacing:3px;
+  font-weight:800;
+  color:var(--gold);
+  letter-spacing:4px;
 }
 
 .nav-links{
@@ -160,9 +196,9 @@ nav{
 .nav-links a{
   text-decoration:none;
   color:var(--muted);
-  font-size:.82rem;
-  letter-spacing:.12em;
+  font-size:.8rem;
   text-transform:uppercase;
+  letter-spacing:.12em;
   transition:.3s;
 }
 
@@ -170,14 +206,12 @@ nav{
   color:var(--gold);
 }
 
-/* Dark Toggle */
-
 .toggle{
   width:50px;
   height:26px;
+  border-radius:40px;
   background:var(--glass);
   border:1px solid var(--border);
-  border-radius:40px;
   position:relative;
   cursor:pointer;
 }
@@ -191,46 +225,51 @@ nav{
   background:var(--gold);
   top:2px;
   left:3px;
-  transition:.3s;
+  transition:.35s;
 }
 
 .light .toggle::before{
   left:25px;
 }
 
-/* Sections */
+/* =========================================================
+SECTIONS
+========================================================= */
 
 section{
-  min-height:100vh;
-  padding:9rem 8vw;
   position:relative;
   z-index:10;
+  min-height:100vh;
+  padding:9rem 7vw;
 }
 
 .section-title{
   font-family:'Cormorant Garamond',serif;
-  font-size:4rem;
-  margin-bottom:4rem;
-  font-weight:600;
+  font-size:4.5rem;
   line-height:1;
+  margin-bottom:4rem;
+  color:var(--text);
 }
 
-/* Hero */
+/* =========================================================
+HERO
+========================================================= */
 
 .hero{
   display:flex;
   align-items:center;
-  position:relative;
+  justify-content:space-between;
+  gap:4rem;
 }
 
 .hero-content{
-  max-width:850px;
+  max-width:760px;
 }
 
-.hero-top{
+.hero-sub{
   color:var(--gold);
   text-transform:uppercase;
-  letter-spacing:.3em;
+  letter-spacing:.35em;
   font-size:.8rem;
   margin-bottom:2rem;
 }
@@ -239,7 +278,6 @@ section{
   font-family:'Cormorant Garamond',serif;
   font-size:7rem;
   line-height:.9;
-  font-weight:600;
   margin-bottom:2rem;
 }
 
@@ -247,101 +285,117 @@ section{
   color:var(--gold);
 }
 
-.hero-desc{
-  max-width:700px;
-  font-size:1.1rem;
-  line-height:1.9;
+.hero p{
   color:var(--muted);
+  line-height:1.9;
+  font-size:1.1rem;
   margin-bottom:3rem;
 }
 
-.hero-buttons{
+/* =========================================================
+BUTTONS
+========================================================= */
+
+.buttons{
   display:flex;
   gap:1rem;
   flex-wrap:wrap;
 }
 
 .btn{
-  padding:1rem 2rem;
-  border-radius:60px;
-  text-decoration:none;
   position:relative;
   overflow:hidden;
-  transition:.35s;
-  font-size:.9rem;
-  letter-spacing:.12em;
+
+  padding:1rem 2rem;
+  border-radius:60px;
+
+  text-decoration:none;
   text-transform:uppercase;
+  letter-spacing:.12em;
+  font-size:.85rem;
+  font-weight:600;
+
+  transition:.35s;
 }
 
 .btn-primary{
   background:var(--gold);
   color:#000;
-  font-weight:700;
 }
 
 .btn-secondary{
-  border:1px solid var(--border);
-  color:var(--text);
-  backdrop-filter:blur(10px);
   background:var(--glass);
+  color:var(--text);
+  border:1px solid var(--border);
+  backdrop-filter:blur(10px);
 }
 
 .btn:hover{
   transform:translateY(-4px) scale(1.03);
 }
 
-/* Floating Tech Stack */
+/* =========================================================
+TECH ORBITS
+========================================================= */
 
 .tech-orbit{
-  position:absolute;
-  right:8%;
-  top:50%;
-  transform:translateY(-50%);
-  width:350px;
-  height:350px;
+  position:relative;
+  width:360px;
+  height:360px;
 }
 
 .orbit{
   position:absolute;
   inset:0;
-  border:1px solid rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.08);
   border-radius:50%;
-  animation:rotate 14s linear infinite;
+  animation:spin 16s linear infinite;
 }
 
 .orbit:nth-child(2){
-  inset:40px;
+  inset:45px;
   animation-direction:reverse;
   animation-duration:10s;
 }
 
 .orbit:nth-child(3){
-  inset:80px;
+  inset:90px;
   animation-duration:7s;
 }
 
 .tech{
   position:absolute;
-  width:60px;
-  height:60px;
-  background:var(--glass);
-  backdrop-filter:blur(10px);
-  border:1px solid var(--border);
+
+  width:65px;
+  height:65px;
+
   border-radius:50%;
+  background:var(--glass);
+  border:1px solid var(--border);
+
   display:flex;
   align-items:center;
   justify-content:center;
-  color:var(--gold);
+
+  backdrop-filter:blur(10px);
+
   font-size:.8rem;
   font-weight:700;
+  color:var(--gold);
 }
 
-@keyframes rotate{
-  from{transform:rotate(0deg);}
-  to{transform:rotate(360deg);}
+@keyframes spin{
+  from{
+    transform:rotate(0deg);
+  }
+  to{
+    transform:rotate(360deg);
+  }
 }
 
-/* Glass Cards */
+/* =========================================================
+GRID
+========================================================= */
 
 .grid{
   display:grid;
@@ -349,16 +403,26 @@ section{
   gap:2rem;
 }
 
+/* =========================================================
+GLASS CARD
+========================================================= */
+
 .card{
-  background:rgba(255,255,255,0.04);
-  backdrop-filter:blur(18px);
-  border:1px solid rgba(255,255,255,0.08);
-  border-radius:30px;
-  padding:2rem;
   position:relative;
   overflow:hidden;
-  transform-style:preserve-3d;
+
+  padding:2rem;
+
+  border-radius:30px;
+
+  background:var(--glass);
+  border:1px solid var(--border);
+
+  backdrop-filter:blur(18px);
+
   transition:.4s;
+  transform-style:preserve-3d;
+
   box-shadow:var(--shadow);
 }
 
@@ -367,16 +431,16 @@ section{
   position:absolute;
   inset:0;
   background:linear-gradient(
-  135deg,
-  rgba(255,255,255,0.08),
-  transparent
+    135deg,
+    rgba(255,255,255,0.08),
+    transparent
   );
   opacity:0;
   transition:.4s;
 }
 
 .card:hover{
-  transform:translateY(-10px) rotateX(4deg) rotateY(-4deg);
+  transform:translateY(-8px);
   border-color:rgba(201,169,110,0.4);
 }
 
@@ -388,15 +452,17 @@ section{
   font-family:'Cormorant Garamond',serif;
   font-size:2rem;
   margin-bottom:1rem;
-  color:var(--gold2);
+  color:var(--gold-light);
 }
 
 .card p{
   color:var(--muted);
-  line-height:1.9;
+  line-height:1.8;
 }
 
-/* Skills */
+/* =========================================================
+SKILLS
+========================================================= */
 
 .skill{
   margin-bottom:2rem;
@@ -405,35 +471,37 @@ section{
 .skill-top{
   display:flex;
   justify-content:space-between;
-  margin-bottom:1rem;
+  margin-bottom:.8rem;
 }
 
 .skill-bar{
   width:100%;
   height:6px;
   border-radius:20px;
-  background:rgba(255,255,255,0.08);
   overflow:hidden;
+  background:rgba(255,255,255,0.08);
 }
 
 .skill-fill{
   height:100%;
   width:0%;
-  background:linear-gradient(to right,var(--gold),#fff3d2);
   border-radius:20px;
+  background:linear-gradient(to right,var(--gold),#fff2d0);
 }
 
-/* Timeline */
+/* =========================================================
+TIMELINE
+========================================================= */
 
 .timeline{
   position:relative;
-  margin-top:5rem;
+  margin-top:3rem;
 }
 
 .timeline::before{
   content:"";
   position:absolute;
-  left:20px;
+  left:18px;
   top:0;
   width:2px;
   height:100%;
@@ -442,73 +510,93 @@ section{
 
 .timeline-item{
   position:relative;
-  margin-bottom:4rem;
+  margin-bottom:3rem;
   padding-left:5rem;
 }
 
 .timeline-item::before{
   content:"";
   position:absolute;
-  left:12px;
+  left:10px;
   top:10px;
   width:18px;
   height:18px;
   border-radius:50%;
   background:var(--gold);
-  box-shadow:0 0 20px var(--gold);
+  box-shadow:0 0 18px var(--gold);
 }
 
-/* Writing */
+/* =========================================================
+QUOTE
+========================================================= */
 
 .quote{
   font-family:'Cormorant Garamond',serif;
-  font-size:2.4rem;
+  font-size:2.5rem;
   line-height:1.7;
-  color:#fff;
-  max-width:900px;
 }
 
 .quote span{
   color:var(--gold);
 }
 
-/* Footer */
+/* =========================================================
+FOOTER
+========================================================= */
 
 footer{
-  padding:4rem;
   text-align:center;
+  padding:4rem 2rem;
   color:var(--muted);
+  position:relative;
+  z-index:10;
 }
 
-/* Responsive */
+/* =========================================================
+RESPONSIVE
+========================================================= */
 
-@media(max-width:1000px){
+@media(max-width:1100px){
 
-.hero h1{
-  font-size:4.5rem;
+.hero{
+  flex-direction:column;
+  align-items:flex-start;
 }
 
 .tech-orbit{
-  display:none;
+  margin:auto;
 }
 
-.section-title{
-  font-size:3rem;
+.hero h1{
+  font-size:5rem;
 }
 
 }
 
-@media(max-width:700px){
+@media(max-width:800px){
 
 .nav-links{
   display:none;
 }
 
 .hero h1{
-  font-size:3.5rem;
+  font-size:3.7rem;
 }
 
-.hero-buttons{
+.section-title{
+  font-size:3rem;
+}
+
+.tech-orbit{
+  width:280px;
+  height:280px;
+}
+
+.quote{
+  font-size:1.8rem;
+}
+
+.buttons{
   flex-direction:column;
 }
 
@@ -521,19 +609,6 @@ section{
   padding:7rem 1.5rem;
 }
 
-.quote{
-  font-size:1.7rem;
-}
-
-}
-
-.light{
-  --bg:#f2ede5;
-  --bg2:#fff;
-  --text:#111;
-  --muted:rgba(0,0,0,0.6);
-  --glass:rgba(255,255,255,0.5);
-  --border:rgba(0,0,0,0.08);
 }
 
 </style>
@@ -541,13 +616,17 @@ section{
 
 <body>
 
-<div class="progress"></div>
+<!-- Progress -->
+<div class="progress-bar"></div>
 
+<!-- Cursor -->
 <div class="cursor"></div>
 <div class="cursor-dot"></div>
 
-<div class="ambient"></div>
+<!-- Glow -->
+<div class="glow"></div>
 
+<!-- 3D Canvas -->
 <div id="canvas-container"></div>
 
 <!-- NAV -->
@@ -575,8 +654,8 @@ section{
 
 <div class="hero-content">
 
-<div class="hero-top reveal">
-PORTFOLIO 2026
+<div class="hero-sub reveal">
+Luxury 3D Portfolio — 2026
 </div>
 
 <h1 class="reveal">
@@ -584,16 +663,15 @@ Hemanshu <br>
 <span>Vikrant</span> Patil
 </h1>
 
-<p class="hero-desc reveal">
-BCA student, athlete, writer, and developer from Pune.
-Building discipline through code, creativity, and consistency.
-This portfolio is a cinematic 3D experience crafted with modern web technologies.
+<p class="reveal">
+BCA student, athlete, writer, and frontend developer from Pune.
+Building immersive digital experiences with discipline, creativity, and modern web technologies.
 </p>
 
-<div class="hero-buttons reveal">
+<div class="buttons reveal">
 
 <a href="#projects" class="btn btn-primary magnetic">
-Explore Work
+Explore Projects
 </a>
 
 <a href="https://www.linkedin.com/in/hemanshu-patil-10939a400"
@@ -606,20 +684,20 @@ LinkedIn
 
 </div>
 
-<!-- Floating Orbit -->
+<!-- Floating Tech Stack -->
 
 <div class="tech-orbit">
 
 <div class="orbit">
-<div class="tech" style="top:-20px;left:140px;">HTML</div>
+<div class="tech" style="top:-18px;left:145px;">HTML</div>
 </div>
 
 <div class="orbit">
-<div class="tech" style="top:130px;right:-20px;">CSS</div>
+<div class="tech" style="top:120px;right:-18px;">CSS</div>
 </div>
 
 <div class="orbit">
-<div class="tech" style="bottom:-20px;left:130px;">JS</div>
+<div class="tech" style="bottom:-18px;left:120px;">JS</div>
 </div>
 
 </div>
@@ -630,29 +708,30 @@ LinkedIn
 
 <section id="about">
 
-<h2 class="section-title reveal">About Me</h2>
+<h2 class="section-title reveal">
+About Me
+</h2>
 
 <div class="grid">
 
 <div class="card tilt">
 <h3>Who I Am</h3>
 <p>
-I am Hemanshu Vikrant Patil, an 18-year-old BCA student at Sinhgad College of Science, Pune. I believe discipline is built daily — through repetition, hard work, and consistency.
+I am Hemanshu Vikrant Patil, a first-year BCA student at Sinhgad College of Science, Pune. Passionate about technology, design, fitness, and creative expression.
 </p>
 </div>
 
 <div class="card tilt">
 <h3>Mindset</h3>
 <p>
-Whether it is programming, lifting weights, or writing poetry, I approach everything with the same philosophy:
-learn fast, improve constantly, and stay hungry.
+Discipline is built through repetition. Whether learning code, training physically, or writing poetry — consistency matters more than motivation.
 </p>
 </div>
 
 <div class="card tilt">
 <h3>Interests</h3>
 <p>
-Powerlifting, boxing, swimming, writing shayari, history, and building digital experiences with modern technology.
+Powerlifting, boxing, swimming, history, UI/UX design, frontend development, and writing shayari and quotes.
 </p>
 </div>
 
@@ -664,7 +743,9 @@ Powerlifting, boxing, swimming, writing shayari, history, and building digital e
 
 <section id="skills">
 
-<h2 class="section-title reveal">Skills & Stack</h2>
+<h2 class="section-title reveal">
+Skills & Tech Stack
+</h2>
 
 <div class="card">
 
@@ -672,11 +753,11 @@ Powerlifting, boxing, swimming, writing shayari, history, and building digital e
 
 <div class="skill-top">
 <span>HTML & CSS</span>
-<span>85%</span>
+<span>90%</span>
 </div>
 
 <div class="skill-bar">
-<div class="skill-fill" data-width="85%"></div>
+<div class="skill-fill" data-width="90%"></div>
 </div>
 
 </div>
@@ -685,11 +766,11 @@ Powerlifting, boxing, swimming, writing shayari, history, and building digital e
 
 <div class="skill-top">
 <span>JavaScript</span>
-<span>65%</span>
+<span>75%</span>
 </div>
 
 <div class="skill-bar">
-<div class="skill-fill" data-width="65%"></div>
+<div class="skill-fill" data-width="75%"></div>
 </div>
 
 </div>
@@ -711,11 +792,11 @@ Powerlifting, boxing, swimming, writing shayari, history, and building digital e
 
 <div class="skill-top">
 <span>Three.js</span>
-<span>50%</span>
+<span>60%</span>
 </div>
 
 <div class="skill-bar">
-<div class="skill-fill" data-width="50%"></div>
+<div class="skill-fill" data-width="60%"></div>
 </div>
 
 </div>
@@ -728,11 +809,14 @@ Powerlifting, boxing, swimming, writing shayari, history, and building digital e
 
 <section id="education">
 
-<h2 class="section-title reveal">Education Journey</h2>
+<h2 class="section-title reveal">
+Education
+</h2>
 
 <div class="timeline">
 
 <div class="timeline-item reveal">
+
 <div class="card">
 <h3>Bachelor of Computer Applications</h3>
 <p>
@@ -740,15 +824,18 @@ Sinhgad College of Science, Pune <br><br>
 2025 — Present
 </p>
 </div>
+
 </div>
 
 <div class="timeline-item reveal">
+
 <div class="card">
 <h3>Developer Journey</h3>
 <p>
-Learning modern frontend development, programming logic, UI/UX design, and 3D web experiences.
+Learning modern web development, UI/UX, animations, Three.js, and immersive frontend experiences.
 </p>
 </div>
+
 </div>
 
 </div>
@@ -759,29 +846,40 @@ Learning modern frontend development, programming logic, UI/UX design, and 3D we
 
 <section id="projects">
 
-<h2 class="section-title reveal">Featured Projects</h2>
+<h2 class="section-title reveal">
+Featured Projects
+</h2>
 
 <div class="grid">
 
 <div class="card tilt">
+
 <h3>3D Portfolio</h3>
+
 <p>
-An immersive luxury portfolio with Three.js, glassmorphism, particle systems, magnetic interactions, and cinematic animations.
+A cinematic luxury portfolio featuring Three.js particles, glassmorphism, smooth scrolling, magnetic interactions, and immersive UI animations.
 </p>
+
 </div>
 
 <div class="card tilt">
+
 <h3>Student Grade Calculator</h3>
+
 <p>
-A clean C programming project for calculating grades, percentages, and academic performance.
+A clean C programming project that calculates total marks, percentage, and grades using structured logic.
 </p>
+
 </div>
 
 <div class="card tilt">
-<h3>Library Tracker</h3>
+
+<h3>Library Book Tracker</h3>
+
 <p>
-SQL database project to manage books, users, and borrow history with structured relationships.
+SQL database project designed to manage books, members, and borrow history efficiently.
 </p>
+
 </div>
 
 </div>
@@ -792,7 +890,9 @@ SQL database project to manage books, users, and borrow history with structured 
 
 <section id="writing">
 
-<h2 class="section-title reveal">Writing</h2>
+<h2 class="section-title reveal">
+Writing
+</h2>
 
 <div class="card">
 
@@ -811,7 +911,9 @@ Zindagi ne kuch yun aazmaya humein —<br>
 
 <section id="connect">
 
-<h2 class="section-title reveal">Let's Connect</h2>
+<h2 class="section-title reveal">
+Let's Connect
+</h2>
 
 <div class="grid">
 
@@ -820,7 +922,7 @@ Zindagi ne kuch yun aazmaya humein —<br>
 <h3>LinkedIn</h3>
 
 <p>
-Professional updates, projects, and networking.
+Professional updates, networking, and projects.
 </p>
 
 <br>
@@ -838,7 +940,7 @@ Open LinkedIn
 <h3>Instagram</h3>
 
 <p>
-Lifestyle, fitness, and everyday moments.
+Fitness, lifestyle, creativity, and everyday grind.
 </p>
 
 <br>
@@ -856,14 +958,14 @@ Open Instagram
 </section>
 
 <footer>
-© 2026 Hemanshu Vikrant Patil — Crafted with vision, discipline & code.
+© 2026 Hemanshu Vikrant Patil — Crafted with discipline, creativity & code.
 </footer>
 
 <script>
 
-/* ===========================
-LENIS SMOOTH SCROLL
-=========================== */
+/* =========================================================
+LENIS
+========================================================= */
 
 const lenis = new Lenis({
   duration:1.2,
@@ -877,9 +979,9 @@ function raf(time){
 
 requestAnimationFrame(raf);
 
-/* ===========================
-CUSTOM CURSOR
-=========================== */
+/* =========================================================
+CURSOR
+========================================================= */
 
 const cursor = document.querySelector(".cursor");
 const cursorDot = document.querySelector(".cursor-dot");
@@ -889,148 +991,160 @@ window.addEventListener("mousemove",(e)=>{
   gsap.to(cursor,{
     x:e.clientX,
     y:e.clientY,
-    duration:.3
+    duration:0.25
   });
 
   gsap.to(cursorDot,{
     x:e.clientX,
     y:e.clientY,
-    duration:.1
+    duration:0.08
   });
 
 });
 
-/* ===========================
+/* =========================================================
 MAGNETIC BUTTONS
-=========================== */
+========================================================= */
 
-document.querySelectorAll(".magnetic").forEach(btn=>{
+document.querySelectorAll(".magnetic").forEach(button=>{
 
-btn.addEventListener("mousemove",(e)=>{
+button.addEventListener("mousemove",(e)=>{
 
-const rect = btn.getBoundingClientRect();
+  const rect = button.getBoundingClientRect();
 
-const x = e.clientX - rect.left - rect.width/2;
-const y = e.clientY - rect.top - rect.height/2;
+  const x = e.clientX - rect.left - rect.width/2;
+  const y = e.clientY - rect.top - rect.height/2;
 
-gsap.to(btn,{
-  x:x*0.2,
-  y:y*0.2,
-  duration:.3
+  gsap.to(button,{
+    x:x*0.2,
+    y:y*0.2,
+    duration:0.3
+  });
+
+});
+
+button.addEventListener("mouseleave",()=>{
+
+  gsap.to(button,{
+    x:0,
+    y:0,
+    duration:0.3
+  });
+
 });
 
 });
 
-btn.addEventListener("mouseleave",()=>{
-
-gsap.to(btn,{
-  x:0,
-  y:0,
-  duration:.3
-});
-
-});
-
-});
-
-/* ===========================
-3D CARD TILT
-=========================== */
+/* =========================================================
+3D TILT CARDS
+========================================================= */
 
 document.querySelectorAll(".tilt").forEach(card=>{
 
 card.addEventListener("mousemove",(e)=>{
 
-const rect = card.getBoundingClientRect();
+  const rect = card.getBoundingClientRect();
 
-const x = e.clientX - rect.left;
-const y = e.clientY - rect.top;
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
 
-const rotateY = (x / rect.width - 0.5) * 18;
-const rotateX = -(y / rect.height - 0.5) * 18;
+  const rotateX = -((y / rect.height)-0.5)*10;
+  const rotateY = ((x / rect.width)-0.5)*10;
 
-card.style.transform = `
-perspective(1200px)
-rotateX(${rotateX}deg)
-rotateY(${rotateY}deg)
-translateY(-8px)
-`;
+  card.style.transform = `
+    perspective(1200px)
+    rotateX(${rotateX}deg)
+    rotateY(${rotateY}deg)
+    translateY(-8px)
+  `;
 
 });
 
 card.addEventListener("mouseleave",()=>{
 
-card.style.transform = `
-perspective(1200px)
-rotateX(0deg)
-rotateY(0deg)
-translateY(0px)
-`;
+  card.style.transform = `
+    perspective(1200px)
+    rotateX(0deg)
+    rotateY(0deg)
+    translateY(0px)
+  `;
 
 });
 
 });
 
-/* ===========================
+/* =========================================================
 SCROLL PROGRESS
-=========================== */
+========================================================= */
 
 window.addEventListener("scroll",()=>{
 
 const scrollTop = window.scrollY;
-const height =
+
+const docHeight =
 document.body.scrollHeight - window.innerHeight;
 
-const progress = (scrollTop/height)*100;
+const progress =
+(scrollTop/docHeight)*100;
 
-document.querySelector(".progress")
+document.querySelector(".progress-bar")
 .style.width = progress + "%";
 
 });
 
-/* ===========================
-GSAP REVEAL
-=========================== */
+/* =========================================================
+GSAP ANIMATIONS
+========================================================= */
 
 gsap.registerPlugin(ScrollTrigger);
 
-gsap.utils.toArray(".reveal").forEach(el=>{
+gsap.utils.toArray(".reveal").forEach(element=>{
 
-gsap.from(el,{
-  y:100,
+gsap.from(element,{
   opacity:0,
-  duration:1.2,
+  y:80,
+  duration:1.1,
   ease:"power4.out",
   scrollTrigger:{
-    trigger:el,
+    trigger:element,
     start:"top 85%"
   }
 });
 
 });
 
-/* ===========================
-SKILL BAR ANIMATION
-=========================== */
+/* =========================================================
+SKILL BAR
+========================================================= */
 
-document.querySelectorAll(".skill-fill")
-.forEach(fill=>{
+document.querySelectorAll(".skill-fill").forEach(bar=>{
 
-gsap.to(fill,{
-  width:fill.dataset.width,
-  duration:2,
+gsap.to(bar,{
+  width:bar.dataset.width,
+  duration:1.8,
   ease:"power3.out",
   scrollTrigger:{
-    trigger:fill,
+    trigger:bar,
     start:"top 90%"
   }
 });
 
 });
 
-/* ===========================
-THREE JS SCENE
-=========================== */
+/* =========================================================
+DARK MODE
+========================================================= */
+
+document.querySelector(".toggle")
+.addEventListener("click",()=>{
+
+document.body.classList.toggle("light");
+
+});
+
+/* =========================================================
+THREE JS
+========================================================= */
 
 const scene = new THREE.Scene();
 
@@ -1048,39 +1162,49 @@ alpha:true,
 antialias:true
 });
 
-renderer.setSize(window.innerWidth,window.innerHeight);
+renderer.setSize(
+window.innerWidth,
+window.innerHeight
+);
+
+renderer.setPixelRatio(
+Math.min(window.devicePixelRatio,2)
+);
 
 document
 .getElementById("canvas-container")
 .appendChild(renderer.domElement);
 
-/* PARTICLES */
+/* =========================================================
+PARTICLES
+========================================================= */
 
-const particlesGeometry = new THREE.BufferGeometry();
+const particlesGeometry =
+new THREE.BufferGeometry();
 
-const particlesCount = 2500;
+const particleCount = 2500;
 
-const posArray = new Float32Array(
-particlesCount * 3
-);
+const positions =
+new Float32Array(particleCount * 3);
 
-for(let i=0;i<particlesCount*3;i++){
+for(let i=0;i<particleCount*3;i++){
 
-posArray[i] = (Math.random()-0.5)*200;
+positions[i] =
+(Math.random()-0.5)*200;
 
 }
 
 particlesGeometry.setAttribute(
 'position',
-new THREE.BufferAttribute(posArray,3)
+new THREE.BufferAttribute(positions,3)
 );
 
 const particlesMaterial =
 new THREE.PointsMaterial({
-size:0.12,
-color:"#c9a96e",
-transparent:true,
-opacity:0.8
+  size:0.12,
+  color:"#c9a96e",
+  transparent:true,
+  opacity:0.75
 });
 
 const particlesMesh =
@@ -1091,28 +1215,33 @@ particlesMaterial
 
 scene.add(particlesMesh);
 
-/* FLOATING OBJECTS */
+/* =========================================================
+FLOATING OBJECTS
+========================================================= */
 
-const objects=[];
+const floatingObjects = [];
 
-for(let i=0;i<12;i++){
+for(let i=0;i<10;i++){
 
 const geometry =
 new THREE.IcosahedronGeometry(
-Math.random()*1.2+0.4,
+Math.random()*1.3+0.5,
 1
 );
 
 const material =
 new THREE.MeshStandardMaterial({
-color:"#c9a96e",
-wireframe:true,
-transparent:true,
-opacity:0.3
+  color:"#c9a96e",
+  wireframe:true,
+  transparent:true,
+  opacity:0.25
 });
 
 const mesh =
-new THREE.Mesh(geometry,material);
+new THREE.Mesh(
+geometry,
+material
+);
 
 mesh.position.set(
 (Math.random()-0.5)*80,
@@ -1122,58 +1251,77 @@ mesh.position.set(
 
 scene.add(mesh);
 
-objects.push(mesh);
+floatingObjects.push(mesh);
 
 }
 
-/* LIGHTS */
+/* =========================================================
+LIGHTS
+========================================================= */
 
 const ambientLight =
-new THREE.AmbientLight(0xffffff,.5);
+new THREE.AmbientLight(
+0xffffff,
+0.5
+);
 
 scene.add(ambientLight);
 
 const pointLight =
-new THREE.PointLight(0xc9a96e,1.2);
+new THREE.PointLight(
+0xc9a96e,
+1.2
+);
 
 pointLight.position.set(20,20,20);
 
 scene.add(pointLight);
 
-/* MOUSE */
+/* =========================================================
+MOUSE PARALLAX
+========================================================= */
 
-let mouseX=0;
-let mouseY=0;
+let mouseX = 0;
+let mouseY = 0;
 
 document.addEventListener("mousemove",(e)=>{
 
-mouseX = (e.clientX/window.innerWidth - 0.5)*2;
-mouseY = (e.clientY/window.innerHeight - 0.5)*2;
+mouseX =
+(e.clientX/window.innerWidth - 0.5)*2;
+
+mouseY =
+(e.clientY/window.innerHeight - 0.5)*2;
 
 });
 
-/* ANIMATE */
+/* =========================================================
+ANIMATION LOOP
+========================================================= */
 
 function animate(){
 
 requestAnimationFrame(animate);
 
-particlesMesh.rotation.y += 0.0007;
+particlesMesh.rotation.y += 0.0006;
 
-objects.forEach((obj,i)=>{
+floatingObjects.forEach((obj,index)=>{
 
-obj.rotation.x += 0.003;
-obj.rotation.y += 0.004;
+obj.rotation.x += 0.002;
+obj.rotation.y += 0.003;
 
-obj.position.y += Math.sin(Date.now()*0.001+i)*0.002;
+obj.position.y +=
+Math.sin(Date.now()*0.001 + index)
+*0.003;
 
 });
 
 camera.position.x +=
-(mouseX*8 - camera.position.x)*0.03;
+(mouseX * 6 - camera.position.x)
+*0.03;
 
 camera.position.y +=
-(-mouseY*8 - camera.position.y)*0.03;
+(-mouseY * 6 - camera.position.y)
+*0.03;
 
 renderer.render(scene,camera);
 
@@ -1181,7 +1329,9 @@ renderer.render(scene,camera);
 
 animate();
 
-/* RESIZE */
+/* =========================================================
+RESIZE
+========================================================= */
 
 window.addEventListener("resize",()=>{
 
@@ -1197,33 +1347,17 @@ window.innerHeight
 
 });
 
-/* ===========================
-DARK MODE
-=========================== */
-
-const toggle = document.querySelector(".toggle");
-
-toggle.addEventListener("click",()=>{
-
-document.body.classList.toggle("light");
-
-});
-
-/* ===========================
-AMBIENT LIGHT CHANGE
-=========================== */
+/* =========================================================
+AMBIENT GLOW MOTION
+========================================================= */
 
 window.addEventListener("scroll",()=>{
 
 const scroll = window.scrollY;
 
-const ambient = document.querySelector(".ambient");
-
-ambient.style.transform =
+document.querySelector(".glow")
+.style.transform =
 `translateY(${scroll*0.2}px)`;
-
-ambient.style.opacity =
-0.08 + scroll / 15000;
 
 });
 
