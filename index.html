@@ -1,1014 +1,469 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Hemanshu Vikrant Patil </title>
+<title>Hemanshu Patil | Premium Portfolio</title>
 
-<meta name="description" content="Hemanshu Vikrant Patil "/>
-
-<!-- GOOGLE FONTS -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-<!-- GSAP -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-
-<!-- LENIS -->
-<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/bundled/lenis.min.js"></script>
-
-<!-- THREE JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<meta name="description"
+content="Hemanshu Patil - Developer, AI Learner, Boxer, Powerlifter and Creator">
 
 <style>
-
-/* =========================================================
-ROOT VARIABLES
-========================================================= */
-
-:root{
-
---bg:#060606;
---surface:#111111;
---text:#f4f0e8;
---muted:rgba(255,255,255,0.55);
-
---gold:#c9a96e;
---gold-light:#f3ddb2;
-
---glass:rgba(255,255,255,0.05);
---glass-border:rgba(255,255,255,0.08);
-
---shadow:0 10px 40px rgba(0,0,0,0.45);
-
-}
-
-/* =========================================================
-RESET
-========================================================= */
 
 *{
 margin:0;
 padding:0;
 box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+scroll-behavior:smooth;
 }
 
-html{
-scroll-behavior:smooth;
-overflow-x:hidden;
+:root{
+--bg:#0a0a0a;
+--card:rgba(255,255,255,0.05);
+--gold:#d4af37;
+--gold-light:#f5d76e;
+--white:#ffffff;
+--gray:#bdbdbd;
 }
 
 body{
-background:var(--bg);
-color:var(--text);
-font-family:'Inter',sans-serif;
+background:linear-gradient(
+135deg,
+#050505,
+#101010,
+#050505
+);
+color:white;
 overflow-x:hidden;
-cursor:none;
 }
 
-/* =========================================================
-NOISE OVERLAY
-========================================================= */
+/* Animated Background */
 
 body::before{
-
-content:"";
-
+content:'';
 position:fixed;
-inset:0;
-
-background-image:
-radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
-
-background-size:3px 3px;
-
-opacity:.05;
-
-pointer-events:none;
-
-z-index:99999;
-
-}
-
-/* =========================================================
-SCROLL BAR
-========================================================= */
-
-.progress-bar{
-
-position:fixed;
+width:100%;
+height:100%;
 top:0;
 left:0;
 
-height:3px;
-width:0%;
-
-z-index:999999;
-
 background:
-linear-gradient(to right,var(--gold),#fff2cf);
+radial-gradient(circle at 20% 20%,
+rgba(212,175,55,0.15),
+transparent 25%),
 
+radial-gradient(circle at 80% 80%,
+rgba(245,215,110,0.08),
+transparent 25%);
+
+z-index:-1;
 }
 
-/* =========================================================
-CUSTOM CURSOR
-========================================================= */
-
-.cursor{
-
-position:fixed;
-
-width:18px;
-height:18px;
-
-border:2px solid var(--gold);
-
-border-radius:50%;
-
-pointer-events:none;
-
-z-index:999999;
-
-transform:translate(-50%,-50%);
-
-backdrop-filter:blur(3px);
-
-}
-
-.cursor-dot{
-
-position:fixed;
-
-width:5px;
-height:5px;
-
-background:var(--gold);
-
-border-radius:50%;
-
-pointer-events:none;
-
-z-index:999999;
-
-transform:translate(-50%,-50%);
-
-}
-
-/* =========================================================
-THREE JS CANVAS
-========================================================= */
-
-#canvas-container{
-
-position:fixed;
-inset:0;
-
-z-index:1;
-
-}
-
-/* =========================================================
-AMBIENT LIGHT
-========================================================= */
-
-.glow{
-
-position:fixed;
-
-width:700px;
-height:700px;
-
-background:
-radial-gradient(circle,var(--gold),transparent 70%);
-
-opacity:.08;
-
-filter:blur(120px);
-
-top:-250px;
-right:-200px;
-
-pointer-events:none;
-
-z-index:0;
-
-}
-
-/* =========================================================
-NAVBAR
-========================================================= */
+/* Navbar */
 
 nav{
-
 position:fixed;
 top:0;
-left:0;
-
 width:100%;
-
+padding:20px 8%;
 display:flex;
 justify-content:space-between;
 align-items:center;
 
-padding:1.4rem 5vw;
+backdrop-filter:blur(15px);
 
-z-index:9999;
+background:rgba(0,0,0,.4);
 
-background:rgba(0,0,0,0.18);
+border-bottom:
+1px solid rgba(212,175,55,.2);
 
-backdrop-filter:blur(16px);
-
-border-bottom:1px solid rgba(255,255,255,0.05);
-
+z-index:1000;
 }
 
 .logo{
-
-font-size:1.3rem;
+font-size:2rem;
 font-weight:800;
-
-letter-spacing:4px;
-
 color:var(--gold);
-
+letter-spacing:2px;
 }
 
 .nav-links{
-
 display:flex;
-gap:2rem;
-
+gap:30px;
 }
 
 .nav-links a{
-
+color:white;
 text-decoration:none;
-
-font-size:.78rem;
 font-weight:500;
-
-letter-spacing:.14em;
-text-transform:uppercase;
-
-color:var(--muted);
-
 transition:.3s;
-
 }
 
 .nav-links a:hover{
 color:var(--gold);
 }
 
-/* =========================================================
-SECTIONS
-========================================================= */
-
-section{
-
-position:relative;
-z-index:10;
-
-min-height:100vh;
-
-padding:8rem 7vw;
-
-display:flex;
-flex-direction:column;
-justify-content:center;
-
-}
-
-/* =========================================================
-HERO
-========================================================= */
+/* Hero */
 
 .hero{
-
-display:flex;
-align-items:center;
-justify-content:space-between;
-
-gap:4rem;
-
 min-height:100vh;
-
+display:flex;
+justify-content:center;
+align-items:center;
+text-align:center;
+padding:120px 30px 30px;
 }
 
 .hero-content{
-
-max-width:750px;
-
-}
-
-.hero-top{
-
-font-size:.75rem;
-
-letter-spacing:.3em;
-text-transform:uppercase;
-
-color:var(--gold);
-
-margin-bottom:2rem;
-
+max-width:900px;
 }
 
 .hero h1{
 
-font-family:'Cormorant Garamond',serif;
+font-size:clamp(3rem,8vw,6rem);
 
-font-size:clamp(4rem,9vw,7rem);
+background:
+linear-gradient(
+90deg,
+var(--gold),
+var(--gold-light)
+);
 
-line-height:.9;
-
-font-weight:700;
-
-margin-bottom:2rem;
-
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
 }
 
-.hero h1 span{
-color:var(--gold);
+.hero h2{
+margin-top:20px;
+font-size:1.5rem;
+color:var(--gray);
 }
 
-.hero-desc{
-
-font-size:1.08rem;
-
-line-height:1.9;
-
-max-width:650px;
-
-color:var(--muted);
-
-margin-bottom:3rem;
-
+.hero p{
+margin-top:25px;
+line-height:1.8;
+font-size:1.1rem;
 }
 
-/* =========================================================
-BUTTONS
-========================================================= */
+/* Age Box */
 
-.buttons{
+.age-box{
 
-display:flex;
-gap:1rem;
-flex-wrap:wrap;
+display:inline-block;
 
+margin-top:25px;
+
+padding:15px 25px;
+
+border-radius:15px;
+
+background:var(--card);
+
+backdrop-filter:blur(20px);
+
+border:
+1px solid rgba(212,175,55,.2);
+}
+
+/* Buttons */
+
+.btn-group{
+margin-top:35px;
 }
 
 .btn{
 
-position:relative;
+display:inline-block;
 
-padding:1rem 2rem;
+padding:14px 28px;
 
-border-radius:60px;
+margin:8px;
+
+border-radius:50px;
 
 text-decoration:none;
 
-font-size:.82rem;
 font-weight:700;
 
-letter-spacing:.14em;
-text-transform:uppercase;
+background:
+linear-gradient(
+90deg,
+var(--gold),
+var(--gold-light)
+);
 
-overflow:hidden;
+color:black;
 
-transition:.35s;
-
-}
-
-.btn-primary{
-
-background:var(--gold);
-color:#000;
-
-}
-
-.btn-secondary{
-
-background:var(--glass);
-
-border:1px solid var(--glass-border);
-
-color:var(--text);
-
-backdrop-filter:blur(10px);
-
+transition:.4s;
 }
 
 .btn:hover{
-
-transform:
-translateY(-4px)
-scale(1.03);
-
+transform:translateY(-5px);
 }
 
-/* =========================================================
-FLOATING TECH STACK
-========================================================= */
+/* Section */
 
-.tech-wrapper{
-
-position:relative;
-
-width:420px;
-height:420px;
-
-flex-shrink:0;
-
+section{
+padding:100px 8%;
 }
-
-.orbit{
-
-position:absolute;
-inset:0;
-
-border:1px solid rgba(255,255,255,0.06);
-
-border-radius:50%;
-
-animation:spin 18s linear infinite;
-
-}
-
-.orbit:nth-child(2){
-
-inset:50px;
-
-animation-direction:reverse;
-animation-duration:12s;
-
-}
-
-.orbit:nth-child(3){
-
-inset:100px;
-
-animation-duration:8s;
-
-}
-
-.tech{
-
-position:absolute;
-
-width:68px;
-height:68px;
-
-display:flex;
-align-items:center;
-justify-content:center;
-
-border-radius:50%;
-
-background:var(--glass);
-
-border:1px solid var(--glass-border);
-
-backdrop-filter:blur(10px);
-
-font-size:.8rem;
-font-weight:700;
-
-color:var(--gold);
-
-}
-
-@keyframes spin{
-
-from{
-transform:rotate(0deg);
-}
-
-to{
-transform:rotate(360deg);
-}
-
-}
-
-/* =========================================================
-SECTION TITLE
-========================================================= */
 
 .section-title{
 
-font-family:'Cormorant Garamond',serif;
+text-align:center;
 
-font-size:clamp(3rem,7vw,5rem);
+font-size:2.5rem;
 
-margin-bottom:4rem;
+margin-bottom:50px;
 
-line-height:1;
-
+color:var(--gold);
 }
 
-/* =========================================================
-GRID
-========================================================= */
+/* Glass Card */
 
-.grid{
+.card{
+
+background:var(--card);
+
+padding:30px;
+
+border-radius:20px;
+
+backdrop-filter:blur(20px);
+
+border:
+1px solid rgba(255,255,255,.08);
+
+transition:.4s;
+}
+
+.card:hover{
+transform:translateY(-10px);
+}
+
+/* About */
+
+.about{
+line-height:1.9;
+font-size:1.1rem;
+}
+
+/* Skills */
+
+.skills-grid{
+
+display:grid;
+
+grid-template-columns:
+repeat(auto-fit,minmax(250px,1fr));
+
+gap:20px;
+}
+
+.skill-card{
+text-align:center;
+}
+
+/* Projects */
+
+.projects-grid{
 
 display:grid;
 
 grid-template-columns:
 repeat(auto-fit,minmax(300px,1fr));
 
-gap:2rem;
-
+gap:25px;
 }
 
-/* =========================================================
-CARDS
-========================================================= */
-
-.card{
-
-position:relative;
-
-padding:2rem;
-
-border-radius:30px;
-
-background:var(--glass);
-
-border:1px solid var(--glass-border);
-
-backdrop-filter:blur(18px);
-
-box-shadow:var(--shadow);
-
-overflow:hidden;
-
-transform-style:preserve-3d;
-
-transition:.35s;
-
+.project-title{
+color:var(--gold);
+margin-bottom:15px;
 }
 
-.card::before{
+/* Stats */
 
-content:"";
+.stats{
 
-position:absolute;
-inset:0;
+display:grid;
 
-background:
-linear-gradient(
-135deg,
-rgba(255,255,255,0.08),
-transparent
-);
+grid-template-columns:
+repeat(auto-fit,minmax(220px,1fr));
 
-opacity:0;
-
-transition:.35s;
-
+gap:20px;
 }
 
-.card:hover{
-
-transform:
-translateY(-8px);
-
-border-color:
-rgba(201,169,110,0.4);
-
-}
-
-.card:hover::before{
-opacity:1;
-}
-
-.card h3{
-
-font-family:'Cormorant Garamond',serif;
-
+.stat-number{
 font-size:2rem;
-
-margin-bottom:1rem;
-
-color:var(--gold-light);
-
-}
-
-.card p{
-
-line-height:1.8;
-
-color:var(--muted);
-
-}
-
-/* =========================================================
-SKILLS
-========================================================= */
-
-.skill{
-
-margin-bottom:2rem;
-
-}
-
-.skill-top{
-
-display:flex;
-justify-content:space-between;
-
-margin-bottom:.8rem;
-
-}
-
-.skill-bar{
-
-width:100%;
-height:6px;
-
-border-radius:20px;
-
-background:rgba(255,255,255,0.08);
-
-overflow:hidden;
-
-}
-
-.skill-fill{
-
-height:100%;
-width:0%;
-
-border-radius:20px;
-
-background:
-linear-gradient(
-to right,
-var(--gold),
-#fff2cf
-);
-
-}
-
-/* =========================================================
-TIMELINE
-========================================================= */
-
-.timeline{
-
-position:relative;
-
-}
-
-.timeline::before{
-
-content:"";
-
-position:absolute;
-
-left:18px;
-top:0;
-
-width:2px;
-height:100%;
-
-background:
-rgba(255,255,255,0.1);
-
-}
-
-.timeline-item{
-
-position:relative;
-
-padding-left:5rem;
-
-margin-bottom:3rem;
-
-}
-
-.timeline-item::before{
-
-content:"";
-
-position:absolute;
-
-left:10px;
-top:10px;
-
-width:18px;
-height:18px;
-
-border-radius:50%;
-
-background:var(--gold);
-
-box-shadow:
-0 0 20px var(--gold);
-
-}
-
-/* =========================================================
-QUOTE
-========================================================= */
-
-.quote{
-
-font-family:'Cormorant Garamond',serif;
-
-font-size:clamp(1.8rem,4vw,2.7rem);
-
-line-height:1.7;
-
-}
-
-.quote span{
+font-weight:bold;
 color:var(--gold);
 }
 
-/* =========================================================
-FOOTER
-========================================================= */
+/* Contact */
+
+.contact-grid{
+
+display:grid;
+
+grid-template-columns:
+repeat(auto-fit,minmax(250px,1fr));
+
+gap:20px;
+}
+
+.contact-card a{
+text-decoration:none;
+color:white;
+}
+
+/* Footer */
 
 footer{
 
-position:relative;
-z-index:10;
-
-padding:4rem 2rem;
+padding:30px;
 
 text-align:center;
 
-color:var(--muted);
+border-top:
+1px solid rgba(212,175,55,.2);
 
+margin-top:50px;
 }
 
-/* =========================================================
-RESPONSIVE FIX
-========================================================= */
-
-@media(max-width:1100px){
-
-.hero{
-
-flex-direction:column;
-align-items:flex-start;
-
-}
-
-.tech-wrapper{
-
-width:320px;
-height:320px;
-
-margin:auto;
-
-}
-
-}
+/* Mobile */
 
 @media(max-width:768px){
 
-body{
-cursor:auto;
-}
-
-.cursor,
-.cursor-dot{
-display:none;
-}
-
 .nav-links{
-display:none;
+gap:15px;
+font-size:.9rem;
 }
 
-.hero h1{
-font-size:4rem;
+.hero h2{
+font-size:1.2rem;
 }
 
-.buttons{
-flex-direction:column;
-width:100%;
+.section-title{
+font-size:2rem;
 }
 
-.btn{
-width:100%;
-text-align:center;
-}
-
-section{
-padding:7rem 1.5rem;
-}
-
-.tech-wrapper{
-
-width:260px;
-height:260px;
-
-}
-
-.card{
-padding:1.6rem;
-}
-
-}
-
-/* =========================================================
-PREVENT ZOOMED LOOK
-========================================================= */
-
-canvas{
-width:100% !important;
-height:100% !important;
-display:block;
-}
-
-.hero,
-section,
-.card,
-.grid{
-max-width:1600px;
-margin:auto;
 }
 
 </style>
-
 </head>
 
 <body>
 
-<!-- PROGRESS -->
-<div class="progress-bar"></div>
-
-<!-- CURSOR -->
-<div class="cursor"></div>
-<div class="cursor-dot"></div>
-
-<!-- GLOW -->
-<div class="glow"></div>
-
-<!-- THREE JS -->
-<div id="canvas-container"></div>
-
-<!-- NAV -->
-
 <nav>
 
 <div class="logo">
-HVP
+HP
 </div>
 
 <div class="nav-links">
-
 <a href="#about">About</a>
 <a href="#skills">Skills</a>
-<a href="#education">Education</a>
 <a href="#projects">Projects</a>
-<a href="#writing">Writing</a>
-<a href="#connect">Connect</a>
-
+<a href="#contact">Contact</a>
 </div>
 
 </nav>
-
-<!-- HERO -->
 
 <section class="hero">
 
 <div class="hero-content">
 
-<div class="hero-top reveal">
-Luxury 3D Portfolio — 2026
+<h1>Hemanshu Patil</h1>
+
+<h2 id="role">
+Developer • AI Learner • Creator
+</h2>
+
+<div class="age-box">
+Age :
+<span id="age"></span>
 </div>
 
-<h1 class="reveal">
+<p>
 
-Hemanshu <br>
-<span>Vikrant</span> Patil
+FYBCA Student at Sinhgad College of Science,
+Ambegaon, Pune.
 
-</h1>
-
-<p class="hero-desc reveal">
-
-BCA student, athlete, writer, and developer from Pune.
-Crafting immersive digital experiences with modern frontend technologies, cinematic visuals, and discipline-driven creativity.
+Passionate about AI, Web Development,
+Programming, Boxing, Powerlifting,
+Poetry Writing and Building Projects.
 
 </p>
 
-<div class="buttons reveal">
+<div class="btn-group">
 
-<a href="#projects"
-class="btn btn-primary magnetic">
-
-Explore Work
-
+<a class="btn"
+href="https://github.com/hemanshuvp631"
+target="_blank">
+GitHub
 </a>
 
-<a href="https://www.linkedin.com/in/hemanshu-patil-10939a400"
-target="_blank"
-class="btn btn-secondary magnetic">
-
+<a class="btn"
+href="https://www.linkedin.com/in/hemanshu-patil-10939a400/"
+target="_blank">
 LinkedIn
-
 </a>
 
-</div>
-
-</div>
-
-<!-- FLOATING TECH -->
-
-<div class="tech-wrapper">
-
-<div class="orbit">
-
-<div class="tech"
-style="top:-18px;left:170px;">
-
-HTML
-
-</div>
-
-</div>
-
-<div class="orbit">
-
-<div class="tech"
-style="top:130px;right:-18px;">
-
-CSS
-
-</div>
-
-</div>
-
-<div class="orbit">
-
-<div class="tech"
-style="bottom:-18px;left:145px;">
-
-JS
-
-</div>
+<a class="btn"
+href="https://www.instagram.com/hemanshuvp_631/"
+target="_blank">
+Instagram
+</a>
 
 </div>
 
 </div>
 
 </section>
-
 <!-- ABOUT -->
 
 <section id="about">
 
-<h2 class="section-title reveal">
-About Me
-</h2>
+<h2 class="section-title">About Me</h2>
 
-<div class="grid">
-
-<div class="card tilt">
-
-<h3>Who I Am</h3>
+<div class="card about">
 
 <p>
 
-I am Hemanshu Vikrant Patil, a first-year BCA student at Sinhgad College of Science, Pune. Passionate about design, technology, writing, and fitness.
+Hello! I'm <strong>Hemanshu Patil</strong>,
+an ambitious FYBCA student at Sinhgad College of Science,
+Ambegaon, Pune.
+
+My goal is to become a skilled developer and AI engineer
+while constantly learning new technologies and building
+real-world projects.
 
 </p>
 
-</div>
-
-<div class="card tilt">
-
-<h3>Mindset</h3>
+<br>
 
 <p>
 
-Discipline is built daily. Whether learning code, training physically, or writing poetry — consistency always wins.
+Beyond coding, I enjoy writing poetry,
+training in boxing,
+powerlifting,
+and creating MMA content.
 
 </p>
 
-</div>
-
-<div class="card tilt">
-
-<h3>Interests</h3>
+<br>
 
 <p>
 
-Powerlifting, boxing, swimming, frontend development, UI/UX design, history, quotes, poems, and shayaris.
+My philosophy:
+
+<strong>
+Learn. Build. Improve. Repeat.
+</strong>
 
 </p>
-
-</div>
 
 </div>
 
@@ -1018,118 +473,58 @@ Powerlifting, boxing, swimming, frontend development, UI/UX design, history, quo
 
 <section id="skills">
 
-<h2 class="section-title reveal">
-Skills
+<h2 class="section-title">
+Skills & Interests
 </h2>
 
-<div class="card">
+<div class="skills-grid">
 
-<div class="skill">
-
-<div class="skill-top">
-<span>HTML & CSS</span>
-<span>90%</span>
+<div class="card skill-card">
+<h3>C Programming</h3>
 </div>
 
-<div class="skill-bar">
-<div class="skill-fill"
-data-width="90%">
-</div>
+<div class="card skill-card">
+<h3>HTML</h3>
 </div>
 
+<div class="card skill-card">
+<h3>CSS</h3>
 </div>
 
-<div class="skill">
-
-<div class="skill-top">
-<span>JavaScript</span>
-<span>75%</span>
+<div class="card skill-card">
+<h3>JavaScript</h3>
 </div>
 
-<div class="skill-bar">
-<div class="skill-fill"
-data-width="75%">
-</div>
+<div class="card skill-card">
+<h3>Git & GitHub</h3>
 </div>
 
+<div class="card skill-card">
+<h3>AI Tools</h3>
 </div>
 
-<div class="skill">
-
-<div class="skill-top">
-<span>C Programming</span>
-<span>70%</span>
+<div class="card skill-card">
+<h3>AI Agents</h3>
 </div>
 
-<div class="skill-bar">
-<div class="skill-fill"
-data-width="70%">
-</div>
+<div class="card skill-card">
+<h3>Problem Solving</h3>
 </div>
 
+<div class="card skill-card">
+<h3>UI / UX Design</h3>
 </div>
 
-<div class="skill">
-
-<div class="skill-top">
-<span>Three.js</span>
-<span>60%</span>
+<div class="card skill-card">
+<h3>Poetry Writing</h3>
 </div>
 
-<div class="skill-bar">
-<div class="skill-fill"
-data-width="60%">
-</div>
+<div class="card skill-card">
+<h3>Boxing</h3>
 </div>
 
-</div>
-
-</div>
-
-</section>
-
-<!-- EDUCATION -->
-
-<section id="education">
-
-<h2 class="section-title reveal">
-Education
-</h2>
-
-<div class="timeline">
-
-<div class="timeline-item reveal">
-
-<div class="card">
-
-<h3>Bachelor of Computer Applications</h3>
-
-<p>
-
-Sinhgad College of Science, Pune <br><br>
-
-2025 — Present
-
-</p>
-
-</div>
-
-</div>
-
-<div class="timeline-item reveal">
-
-<div class="card">
-
-<h3>Developer Journey</h3>
-
-<p>
-
-Learning modern web development, Three.js, animations, UI/UX, and immersive frontend experiences.
-
-</p>
-
-</div>
-
+<div class="card skill-card">
+<h3>Powerlifting</h3>
 </div>
 
 </div>
@@ -1140,127 +535,220 @@ Learning modern web development, Three.js, animations, UI/UX, and immersive fron
 
 <section id="projects">
 
-<h2 class="section-title reveal">
-Projects
+<h2 class="section-title">
+Featured Projects
 </h2>
 
-<div class="grid">
-
-<div class="card tilt">
-
-<h3>3D Portfolio</h3>
-
-<p>
-
-Luxury cinematic portfolio with Three.js particles, glassmorphism, smooth scrolling, magnetic interactions, and immersive animations.
-
-</p>
-
-</div>
-
-<div class="card tilt">
-
-<h3>Student Grade Calculator</h3>
-
-<p>
-
-A structured C programming project that calculates grades, percentage, and total marks cleanly.
-
-</p>
-
-</div>
-
-<div class="card tilt">
-
-<h3>Library Tracker</h3>
-
-<p>
-
-SQL database project designed to manage books, users, and borrow history efficiently.
-
-</p>
-
-</div>
-
-</div>
-
-</section>
-
-<!-- WRITING -->
-
-<section id="writing">
-
-<h2 class="section-title reveal">
-Writing
-</h2>
+<div class="projects-grid">
 
 <div class="card">
 
-<p class="quote">
+<h3 class="project-title">
+🤖 Leo AI Assistant
+</h3>
 
-“Kuch lutt gaya kuch luta diya,<br>
+<p>
 
-kuch mitt gaya kuch mita diya.<br>
-
-Zindagi ne kuch yun aazmaya humein —<br>
-
-<span>kuch chinn gaya, kuch gawa diya.</span>”
+A personal AI assistant project designed
+for online and offline usage,
+including future Ollama integration.
 
 </p>
 
 </div>
 
-</section>
+<div class="card">
 
-<!-- CONNECT -->
-
-<section id="connect">
-
-<h2 class="section-title reveal">
-Let's Connect
-</h2>
-
-<div class="grid">
-
-<div class="card tilt">
-
-<h3>LinkedIn</h3>
+<h3 class="project-title">
+🌐 3D Portfolio Website
+</h3>
 
 <p>
 
-Professional updates, networking, and projects.
+Modern portfolio website featuring
+animations, responsiveness,
+and personal branding.
 
+</p>
+
+</div>
+
+<div class="card">
+
+<h3 class="project-title">
+🚀 AI Experiments
+</h3>
+
+<p>
+
+Learning and experimenting with AI tools,
+automation workflows,
+and intelligent systems.
+
+</p>
+
+</div>
+
+<div class="card">
+
+<h3 class="project-title">
+🥊 MMA Content Brand
+</h3>
+
+<p>
+
+Building a combat sports content page
+and learning digital branding.
+
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- STATS -->
+
+<section>
+
+<h2 class="section-title">
+Current Journey
+</h2>
+
+<div class="stats">
+
+<div class="card">
+<div class="stat-number">FYBCA</div>
+Student
+</div>
+
+<div class="card">
+<div class="stat-number">2026</div>
+Building Leo AI
+</div>
+
+<div class="card">
+<div class="stat-number">24/7</div>
+Learning
+</div>
+
+<div class="card">
+<div class="stat-number">∞</div>
+Growth Mindset
+</div>
+
+</div>
+
+</section>
+
+<!-- QUOTES -->
+
+<section>
+
+<h2 class="section-title">
+Quotes I Live By
+</h2>
+
+<div class="card about">
+
+<p>
+"Success isn't built in a day.
+It is built daily."
 </p>
 
 <br>
 
-<a href="https://www.linkedin.com/in/hemanshu-patil-10939a400"
-target="_blank"
-class="btn btn-primary magnetic">
+<p>
+"Stay dangerous.
+Stay disciplined.
+Stay learning."
+</p>
 
-Open LinkedIn
+<br>
+
+<p>
+"Every expert was once a beginner
+who refused to quit."
+</p>
+
+</div>
+
+</section>
+
+<!-- CONTACT -->
+
+<section id="contact">
+
+<h2 class="section-title">
+Connect With Me
+</h2>
+
+<div class="contact-grid">
+
+<div class="card contact-card">
+
+<h3>
+💻 GitHub
+</h3>
+
+<br>
+
+<a href="https://github.com/hemanshuvp631"
+target="_blank">
+
+github.com/hemanshuvp631
 
 </a>
 
 </div>
 
-<div class="card tilt">
+<div class="card contact-card">
 
-<h3>Instagram</h3>
+<h3>
+💼 LinkedIn
+</h3>
 
-<p>
+<br>
 
-Fitness, lifestyle, creativity, and everyday grind.
+<a href="https://www.linkedin.com/in/hemanshu-patil-10939a400/"
+target="_blank">
 
-</p>
+View LinkedIn Profile
+
+</a>
+
+</div>
+
+<div class="card contact-card">
+
+<h3>
+📸 Main Instagram
+</h3>
 
 <br>
 
 <a href="https://www.instagram.com/hemanshuvp_631/"
-target="_blank"
-class="btn btn-secondary magnetic">
+target="_blank">
 
-Open Instagram
+@hemanshuvp_631
+
+</a>
+
+</div>
+
+<div class="card contact-card">
+
+<h3>
+🥊 MMA Account
+</h3>
+
+<br>
+
+<a href="https://www.instagram.com/notorious.mma_631/"
+target="_blank">
+
+@notorious.mma_631
 
 </a>
 
@@ -1272,448 +760,98 @@ Open Instagram
 
 <footer>
 
-© 2026 Hemanshu Vikrant Patil — Crafted with vision, discipline & code.
+<p>
+© <span id="year"></span>
+Hemanshu Patil
+</p>
+
+<br>
+
+<p>
+Built with Passion, Discipline & Curiosity.
+</p>
 
 </footer>
 
 <script>
 
-/* =========================================================
-LENIS SMOOTH SCROLL
-========================================================= */
+/* Dynamic Age */
 
-const lenis = new Lenis({
-duration:1.2,
-smoothWheel:true
-});
+const birthDate =
+new Date("2007-07-15");
 
-function raf(time){
+function calculateAge(){
 
-lenis.raf(time);
+const today =
+new Date();
 
-requestAnimationFrame(raf);
+let age =
+today.getFullYear()
+-
+birthDate.getFullYear();
 
+const monthDiff =
+today.getMonth()
+-
+birthDate.getMonth();
+
+if(
+monthDiff < 0 ||
+(
+monthDiff === 0 &&
+today.getDate()
+<
+birthDate.getDate()
+)
+){
+age--;
 }
 
-requestAnimationFrame(raf);
-
-/* =========================================================
-CUSTOM CURSOR
-========================================================= */
-
-const cursor =
-document.querySelector(".cursor");
-
-const cursorDot =
-document.querySelector(".cursor-dot");
-
-window.addEventListener("mousemove",(e)=>{
-
-gsap.to(cursor,{
-x:e.clientX,
-y:e.clientY,
-duration:0.25
-});
-
-gsap.to(cursorDot,{
-x:e.clientX,
-y:e.clientY,
-duration:0.08
-});
-
-});
-
-/* =========================================================
-MAGNETIC BUTTONS
-========================================================= */
-
-document
-.querySelectorAll(".magnetic")
-.forEach(button=>{
-
-button.addEventListener("mousemove",(e)=>{
-
-const rect =
-button.getBoundingClientRect();
-
-const x =
-e.clientX - rect.left - rect.width/2;
-
-const y =
-e.clientY - rect.top - rect.height/2;
-
-gsap.to(button,{
-x:x*0.2,
-y:y*0.2,
-duration:0.3
-});
-
-});
-
-button.addEventListener("mouseleave",()=>{
-
-gsap.to(button,{
-x:0,
-y:0,
-duration:0.3
-});
-
-});
-
-});
-
-/* =========================================================
-3D TILT CARDS
-========================================================= */
-
-document
-.querySelectorAll(".tilt")
-.forEach(card=>{
-
-card.addEventListener("mousemove",(e)=>{
-
-const rect =
-card.getBoundingClientRect();
-
-const x =
-e.clientX - rect.left;
-
-const y =
-e.clientY - rect.top;
-
-const rotateX =
--((y / rect.height)-0.5)*10;
-
-const rotateY =
-((x / rect.width)-0.5)*10;
-
-card.style.transform = `
-perspective(1200px)
-rotateX(${rotateX}deg)
-rotateY(${rotateY}deg)
-translateY(-8px)
-`;
-
-});
-
-card.addEventListener("mouseleave",()=>{
-
-card.style.transform = `
-perspective(1200px)
-rotateX(0deg)
-rotateY(0deg)
-translateY(0px)
-`;
-
-});
-
-});
-
-/* =========================================================
-SCROLL PROGRESS
-========================================================= */
-
-window.addEventListener("scroll",()=>{
-
-const scrollTop = window.scrollY;
-
-const height =
-document.body.scrollHeight
-- window.innerHeight;
-
-const progress =
-(scrollTop / height) * 100;
-
-document
-.querySelector(".progress-bar")
-.style.width = progress + "%";
-
-});
-
-/* =========================================================
-GSAP ANIMATIONS
-========================================================= */
-
-gsap.registerPlugin(ScrollTrigger);
-
-gsap.utils
-.toArray(".reveal")
-.forEach(element=>{
-
-gsap.from(element,{
-opacity:0,
-y:80,
-duration:1.1,
-ease:"power4.out",
-scrollTrigger:{
-trigger:element,
-start:"top 85%"
-}
-});
-
-});
-
-/* =========================================================
-SKILL BARS
-========================================================= */
-
-document
-.querySelectorAll(".skill-fill")
-.forEach(bar=>{
-
-gsap.to(bar,{
-width:bar.dataset.width,
-duration:1.8,
-ease:"power3.out",
-scrollTrigger:{
-trigger:bar,
-start:"top 90%"
-}
-});
-
-});
-
-/* =========================================================
-THREE JS
-========================================================= */
-
-const scene =
-new THREE.Scene();
-
-const camera =
-new THREE.PerspectiveCamera(
-60,
-window.innerWidth/window.innerHeight,
-0.1,
-1000
-);
-
-/* FIXED ZOOM */
-camera.position.z = 70;
-
-const renderer =
-new THREE.WebGLRenderer({
-alpha:true,
-antialias:true
-});
-
-renderer.setSize(
-window.innerWidth,
-window.innerHeight
-);
-
-renderer.setPixelRatio(
-Math.min(window.devicePixelRatio,1.8)
-);
-
-document
-.getElementById("canvas-container")
-.appendChild(renderer.domElement);
-
-/* =========================================================
-PARTICLES
-========================================================= */
-
-const particlesGeometry =
-new THREE.BufferGeometry();
-
-const particleCount = 2200;
-
-const positions =
-new Float32Array(particleCount * 3);
-
-for(let i=0;i<particleCount*3;i++){
-
-positions[i] =
-(Math.random()-0.5)*240;
-
+document.getElementById("age")
+.innerText = age;
 }
 
-particlesGeometry.setAttribute(
-'position',
-new THREE.BufferAttribute(positions,3)
-);
+calculateAge();
 
-const particlesMaterial =
-new THREE.PointsMaterial({
+/* Auto Year */
 
-size:0.14,
+document.getElementById("year")
+.innerText =
+new Date().getFullYear();
 
-color:"#c9a96e",
+/* Role Animation */
 
-transparent:true,
+const roles = [
 
-opacity:0.7
+"Developer",
 
-});
+"AI Learner",
 
-const particlesMesh =
-new THREE.Points(
-particlesGeometry,
-particlesMaterial
-);
+"Creator",
 
-scene.add(particlesMesh);
+"Boxer",
 
-/* =========================================================
-FLOATING OBJECTS
-========================================================= */
+"Powerlifter",
 
-const floatingObjects = [];
+"Poetry Writer"
 
-for(let i=0;i<10;i++){
+];
 
-const geometry =
-new THREE.IcosahedronGeometry(
-Math.random()*1.5+0.4,
-1
-);
+let current = 0;
 
-const material =
-new THREE.MeshStandardMaterial({
+setInterval(()=>{
 
-color:"#c9a96e",
+document.getElementById("role")
+.innerText =
+roles[current];
 
-wireframe:true,
+current++;
 
-transparent:true,
-
-opacity:0.2
-
-});
-
-const mesh =
-new THREE.Mesh(
-geometry,
-material
-);
-
-mesh.position.set(
-
-(Math.random()-0.5)*120,
-
-(Math.random()-0.5)*120,
-
-(Math.random()-0.5)*120
-
-);
-
-scene.add(mesh);
-
-floatingObjects.push(mesh);
-
+if(current >= roles.length){
+current = 0;
 }
 
-/* =========================================================
-LIGHTS
-========================================================= */
-
-const ambientLight =
-new THREE.AmbientLight(
-0xffffff,
-0.45
-);
-
-scene.add(ambientLight);
-
-const pointLight =
-new THREE.PointLight(
-0xc9a96e,
-1.2
-);
-
-pointLight.position.set(
-20,
-20,
-20
-);
-
-scene.add(pointLight);
-
-/* =========================================================
-MOUSE PARALLAX
-========================================================= */
-
-let mouseX = 0;
-let mouseY = 0;
-
-document.addEventListener("mousemove",(e)=>{
-
-mouseX =
-(e.clientX/window.innerWidth - 0.5)*2;
-
-mouseY =
-(e.clientY/window.innerHeight - 0.5)*2;
-
-});
-
-/* =========================================================
-ANIMATE
-========================================================= */
-
-function animate(){
-
-requestAnimationFrame(animate);
-
-particlesMesh.rotation.y += 0.0005;
-
-floatingObjects.forEach((obj,index)=>{
-
-obj.rotation.x += 0.002;
-obj.rotation.y += 0.003;
-
-obj.position.y +=
-Math.sin(Date.now()*0.001+index)
-*0.002;
-
-});
-
-camera.position.x +=
-(mouseX * 5 - camera.position.x)
-*0.02;
-
-camera.position.y +=
-(-mouseY * 5 - camera.position.y)
-*0.02;
-
-renderer.render(scene,camera);
-
-}
-
-animate();
-
-/* =========================================================
-RESIZE
-========================================================= */
-
-window.addEventListener("resize",()=>{
-
-camera.aspect =
-window.innerWidth/window.innerHeight;
-
-camera.updateProjectionMatrix();
-
-renderer.setSize(
-window.innerWidth,
-window.innerHeight
-);
-
-});
-
-/* =========================================================
-AMBIENT GLOW SCROLL
-========================================================= */
-
-window.addEventListener("scroll",()=>{
-
-const scroll = window.scrollY;
-
-document
-.querySelector(".glow")
-.style.transform =
-`translateY(${scroll*0.2}px)`;
-
-});
+},2000);
 
 </script>
 
